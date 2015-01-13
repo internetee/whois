@@ -18,9 +18,11 @@ ActiveRecord::Schema.define(version: 20150113113236) do
 
   create_table "domains", force: :cascade do |t|
     t.string   "name"
-    t.text     "body"
+    t.text     "whois_body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "domains", ["name"], name: "index_domains_on_name", using: :btree
 
 end

@@ -1,28 +1,12 @@
 require 'bundler/setup'
-require 'eventmachine'
-require 'active_record'
-require 'yaml'
-load 'app/models/domain.rb'
+require 'daemons'
 
-WHOIS_ENV = 'development'
+pwd  = File.dirname(File.expand_path(__FILE__))
+file = pwd + '/lib/whois_server.rb'
 
-module WhoisServer
-  def dbconfig
-    dbconfig = YAML::load(File.open('config/database.yml'))[WHOIS_ENV]
-  end
-
-  def connection
-    con ||= ActiveRecord::Base.establish_connection(dbconfig)
-  end
-
-  def receive_data(data)
-    connection
-    domain = Domain.where(name: data.strip).first
-    send_data domain.body unless domain.nil?
-    close_connection_after_writing
-  end
+Daemons.run_proc(
+   'whois', # name of daemon
+   :log_output => true
+ ) do
+   exec "ruby #{file}"
 end
-
-EventMachine::run {
-  EventMachine::start_server "127.0.0.1", 1043, WhoisServer
-}

@@ -1,0 +1,6 @@
+whois: process with pid 3008 started.
+/home/priit/apps/whois/lib/whois_server.rb:7:in `load': cannot load such file -- /home/priit/apps/whois/lib/app/models/domain.rb (LoadError)
+	from /home/priit/apps/whois/lib/whois_server.rb:7:in `<main>'
+whois: process with pid 8934 started.
+/home/priit/apps/whois/lib/whois_server.rb:7:in `load': cannot load such file -- /home/priit/apps/whois/lib/app/models/domain.rb (LoadError)
+	from /home/priit/apps/whois/lib/whois_server.rb:7:in `<main>'
