@@ -31,5 +31,5 @@ module WhoisServer
 end
 
 EventMachine::run {
-  EventMachine::start_server "127.0.0.1", 43, WhoisServer
+  EventMachine::start_server "127.0.0.1", 1043, WhoisServer
 }
