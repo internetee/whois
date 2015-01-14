@@ -7,9 +7,12 @@ load File.expand_path('../../app/models/domain.rb', __FILE__)
 module WhoisServer
   def dbconfig
     return @dbconfig unless @dbconfig.nil?
-    dbconf = YAML.load(File.open(File.expand_path('../../config/database.yml', __FILE__)))
-    $stderr.puts 'Please inspect config/database.yml for issues!' if dbconf.nil? || dbconf == false
-    @dbconfig = dbconf[ENV['WHOIS_ENV']]
+    begin
+      dbconf = YAML.load(File.open(File.expand_path('../../config/database.yml', __FILE__)))
+      @dbconfig = dbconf[ENV['WHOIS_ENV']]
+    rescue NoMethodError => e
+      $stderr.puts "\n----> Please inspect config/database.yml for issues! Error: #{e}\n\n"
+    end
   end
 
   def connection
