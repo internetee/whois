@@ -10,7 +10,9 @@ development:
   database: whois_development
 
 test:
+  <<: *default
   database: whois_test
 
 production:
+  <<: *default
   database: production
