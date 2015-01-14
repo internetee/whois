@@ -58,7 +58,14 @@ task setup: :environment do
   queue! %(chmod g+rx,u+rwx "#{deploy_to}/shared/config")
 
   queue! %(touch "#{deploy_to}/shared/config/database.yml")
-  queue %(echo '-----> Be sure to edit 'shared/config/database.yml'.')
+  deploy do
+    invoke :'git:clone'
+    invoke :'deploy:link_shared_paths'
+    to :launch do
+      invoke :'bundle:install'
+      queue %(echo '\n  NB! Please edit 'shared/config/database.yml'\n')
+    end
+  end
 end
 
 desc 'Deploys the current version to the server.'
