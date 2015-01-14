@@ -12,13 +12,12 @@ Daemons.run_proc(
   #   multiple: false
   ) do
 
-  if ARGV.include?('production') 
-    WHOIS_ENV = 'production'
-  else
+  if ENV['WHOIS_ENV'].nil? 
     WHOIS_ENV = 'development'
+  else
+    WHOIS_ENV = 'production'
   end
 
   puts "Whois env: #{WHOIS_ENV}"
-
-  exec "ruby #{whois_server}"
+  exec "WHOIS_ENV=#{WHOIS_ENV} ruby #{whois_server}"
 end

@@ -6,7 +6,9 @@ load File.expand_path('../../app/models/domain.rb', __FILE__)
 
 module WhoisServer
   def dbconfig
-    @dbconfig ||= YAML.load(File.open(File.expand_path('../../config/database.yml', __FILE__)))[WHOIS_ENV]
+    return @dbconfig unless @dbconfig.nil?
+    dbconf = YAML.load(File.open(File.expand_path('../../config/database.yml', __FILE__)))
+    @dbconfig = dbconf[ENV['WHOIS_ENV']]
   end
 
   def connection
