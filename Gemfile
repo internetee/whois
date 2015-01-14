@@ -9,3 +9,8 @@ gem 'pg',           '~> 0.18.0'
 gem 'active_record_migrations', '~> 4.2.0.1'
 
 gem 'daemons', '~> 1.1.9'
+
+group :development do
+  # deploy
+  gem 'mina', '~> 0.3.1' # for fast deployment
+end
