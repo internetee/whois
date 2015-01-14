@@ -32,5 +32,5 @@ module WhoisServer
 end
 
 EventMachine.run do
-  EventMachine.start_server '127.0.0.1', 1043, WhoisServer
+  EventMachine.start_server '0.0.0.0', 1043, WhoisServer
 end

@@ -13,6 +13,10 @@ Before demo install, please ensure you have rbenv and postgres installed.
     cd whois
     bundle
     cp config/database.yml-example config/database.yml # and edit it
+
+    # create postgres database, example:
+    # create database whois owner whois encoding 'UTF-8' LC_COLLATE 'et_EE.utf8' LC_CTYPE 'et_EE.utf8' template template0;
+
     rake db:setup
     ruby whois.rb start # or other commands: status start stop run
     whois hello.ee -h localhost -p 1043 # by default whois run on port 1043
@@ -39,6 +43,7 @@ At your local machine:
     cd whois
     bundle
     mina pr setup
+    rake db:schema:load db=production # load schema to production db
 
 
 ```

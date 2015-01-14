@@ -1,3 +1,5 @@
+require 'bundler/setup'
+
 # Standalone migration tasks
 require 'active_record_migrations'
 ActiveRecordMigrations.configure do |c|

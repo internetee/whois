@@ -15,4 +15,4 @@ test:
 
 production:
   <<: *default
-  database: production
+  database: whois_production
