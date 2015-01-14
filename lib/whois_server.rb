@@ -8,6 +8,7 @@ module WhoisServer
   def dbconfig
     return @dbconfig unless @dbconfig.nil?
     dbconf = YAML.load(File.open(File.expand_path('../../config/database.yml', __FILE__)))
+    $stderr.puts 'Please inspect config/database.yml for issues!' if dbconf.nil?
     @dbconfig = dbconf[ENV['WHOIS_ENV']]
   end
 
