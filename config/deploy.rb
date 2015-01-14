@@ -95,7 +95,7 @@ task rollback: :environment do
   end
 end
 
-desc 'Restart Passenger application'
+desc 'Restart whois server'
 task restart: :environment do
-  queue "mkdir -p #{deploy_to}/current/tmp; touch #{deploy_to}/current/tmp/restart.txt"
+  queue "cd #{deploy_to}; WHOIS_ENV=production bundle exec whois.rb restart"
 end

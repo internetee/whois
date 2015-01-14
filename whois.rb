@@ -6,10 +6,10 @@ whois_server = pwd + '/lib/whois_server.rb'
 
 Daemons.run_proc(
   'whois',
-  #   log_output: true,
+    log_output: true,
+    monitor: true,
+    multiple: false
   #   dir_mode: :system,
-  #   monitor: true,
-  #   multiple: false
   ) do
 
   if ENV['WHOIS_ENV'].nil? 
