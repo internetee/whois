@@ -97,5 +97,5 @@ end
 
 desc 'Restart whois server'
 task restart: :environment do
-  queue "cd #{deploy_to}; WHOIS_ENV=production bundle exec whois.rb restart"
+  queue "cd #{deploy_to}/current && WHOIS_ENV=production bundle exec ruby whois.rb restart"
 end
