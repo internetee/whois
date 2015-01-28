@@ -23,11 +23,19 @@ module WhoisServer
     connection
     domain = Domain.where(name: data.strip).first
     if domain.nil?
-      send_data "Not found: #{data}" 
+      send_data(no_entries_msg)
     else
       send_data domain.whois_body 
     end
     close_connection_after_writing
+  end
+
+  private
+
+  def no_entries_msg
+    "This Whois Server contains information on\n" \
+    "Estonian Top Level Domain ee TLD\n\n" \
+    "No entries found!\n\n" 
   end
 end
 

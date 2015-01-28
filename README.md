@@ -18,7 +18,7 @@ Before demo install, please ensure you have rbenv and postgres installed.
     # create database whois owner whois encoding 'UTF-8' LC_COLLATE 'et_EE.utf8' LC_CTYPE 'et_EE.utf8' template template0;
 
     rake db:setup
-    ruby whois.rb start # or other commands: status start stop run
+    ruby whois.rb run # or start for daemon, other commands: status start stop run --help
     whois hello.ee -h localhost -p 1043 # by default whois run on port 1043
 
 You should receive 
