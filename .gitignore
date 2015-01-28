@@ -1,5 +1,6 @@
 whois.pid
 whois.output
+whois.log
 
 *.rbc
 capybara-*.html
