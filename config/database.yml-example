@@ -13,6 +13,10 @@ test:
   <<: *default
   database: whois_test
 
+staging:
+  <<: *default
+  database: whois_staging
+
 production:
   <<: *default
   database: whois_production
