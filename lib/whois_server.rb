@@ -23,9 +23,11 @@ module WhoisServer
     connection
     domain = Domain.where(name: data.strip).first
     if domain.nil?
-      send_data(no_entries_msg)
+      send_data no_entries_msg
+    elsif domain.whois_body.blank?
+      send_data no_body_msg 
     else
-      send_data domain.whois_body 
+      send_data domain.whois_body + footer_msg
     end
     close_connection_after_writing
   end
@@ -33,9 +35,17 @@ module WhoisServer
   private
 
   def no_entries_msg
-    "This Whois Server contains information on\n" \
-    "Estonian Top Level Domain ee TLD\n\n" \
-    "No entries found!\n\n" 
+    "\nDomain not found" + footer_msg
+  end
+
+  def no_body_msg
+    "\nThere was a technical issue with whois body, please try again later!" +
+    footer_msg
+  end
+
+  def footer_msg
+    "\n\nEstonia .ee Top Level Domain WHOIS server\n" \
+    "More information at http://internet.ee\n"
   end
 end
 
