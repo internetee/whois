@@ -49,3 +49,9 @@ At your local machine:
 ```
     iptables -t nat -A PREROUTING -p tcp --dport 43 -j REDIRECT --to-port 1043
 ```
+
+Additional notes
+----------------
+
+Request logs are going to syslog, however all daemon related errors are going to log directory because 
+daemon lib currently not supporting syslog, probably in future it will happen.
