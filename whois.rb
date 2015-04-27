@@ -1,6 +1,11 @@
 require 'bundler/setup'
 require 'daemons'
 require 'active_record'
+require 'syslog/logger'
+
+def logger
+  @logger ||= Syslog::Logger.new 'whois'
+end
 
 pwd  = File.expand_path('.')
 whois_server = pwd + '/lib/whois_server.rb'
@@ -14,11 +19,16 @@ end
 Daemons.run_proc(
   'whois',
     log_output: true,
+    output_logfilename: 'whois.error.log',
+    logfilename: 'whois.log',
+    log_dir: Dir.pwd + '/log',
     monitor: true,
-    multiple: false
-  #   dir_mode: :system,
+    multiple: false, # multiple needs more testing, currently stop does not terminate mulitple pids
+    dir: 'tmp/pid'
   ) do
 
-  puts "Whois env: #{WHOIS_ENV}"
+  message = "Whois started in: #{WHOIS_ENV}"
+  puts message
+  logger.info message
   exec "WHOIS_ENV=#{WHOIS_ENV} ruby #{whois_server}"
 end
