@@ -57,5 +57,6 @@ module WhoisServer
 end
 
 EventMachine.run do
-  EventMachine.start_server '0.0.0.0', 1043, WhoisServer
+  EventMachine.start_server '0.0.0.0', 43, WhoisServer
+  EventMachine.set_effective_user ENV['WHOIS_USER'] || 'whois'
 end

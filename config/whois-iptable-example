@@ -1,2 +1,0 @@
-# Load whois server iptables rules, routes port 43 to 1043
-iptables -t nat -A PREROUTING -p tcp --dport 43 -j REDIRECT --to-port 1043

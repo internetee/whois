@@ -17,35 +17,38 @@ set -e
 #
 # Make sure that all paths are correct.
 #
-APP_HOME="/home/registry/whois"
+APP_HOME="/home/whois/whois"
 APP_ROOT="$APP_HOME/current"
-APP_USER=whois
-ENV=production
-
-CMD="cd $APP_ROOT && WHOIS_ENV=$ENV bundle exec ruby whois.rb "
+WHOIS_USER=whois # or use some other unprivileged system user
+WHOIS_ENV=production
+RUBY_PATH=/home/$WHOIS_USER/.rbenv/shims/ruby         
 
 cd $APP_ROOT || exit 1
 
 case ${1-help} in
 status)
-        su - $APP_USER -c "$CMD status"
+        cd $APP_ROOT && WHOIS_USER=$WHOIS_USER WHOIS_ENV=$WHOIS_ENV $RUBY_PATH whois.rb $1         
         ;;
 start)
-        su - $APP_USER -c "$CMD start"
+        echo "$1 whois monitor and server"
+        cd $APP_ROOT && WHOIS_USER=$WHOIS_USER WHOIS_ENV=$WHOIS_ENV $RUBY_PATH whois.rb $1         
         ;;
 stop)
-        su - $APP_USER -c "$CMD stop"
+        echo "$1 whois monitor and server"
+        cd $APP_ROOT && WHOIS_USER=$WHOIS_USER WHOIS_ENV=$WHOIS_ENV $RUBY_PATH whois.rb $1         
         ;;
 force-stop)
-        su - $APP_USER -c "$CMD stop -f"
+        echo "$1 whois monitor and server"
+        cd $APP_ROOT && WHOIS_USER=$WHOIS_USER WHOIS_ENV=$WHOIS_ENV $RUBY_PATH whois.rb stop -f 
         ;;
 reload)
-        su - $APP_USER -c "$CMD reload"
+        echo "$1 whois monitor and server"
+        cd $APP_ROOT && WHOIS_USER=$WHOIS_USER WHOIS_ENV=$WHOIS_ENV $RUBY_PATH whois.rb $1 
         ;;
 restart)
-        su - $APP_USER -c "$CMD restart"
+        echo "$1 whois monitor and server"
+        cd $APP_ROOT && WHOIS_USER=$WHOIS_USER WHOIS_ENV=$WHOIS_ENV $RUBY_PATH whois.rb $1 
         ;;
-
 *)
         echo >&2 "Usage: $0 <status|start|stop|force-stop|reload|restart>"
         exit 1
