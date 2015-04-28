@@ -45,10 +45,14 @@ At your local machine:
     mina pr setup
     rake db:schema:load db=production # load schema to production db
 
+Route port 43 to 1043.
 
-```
+    sudo cp config/whois-iptable-example /etc/network/if-up.d/whois
+
+Or create routing file manually at /etc/network/if-up.d/whois
+
     iptables -t nat -A PREROUTING -p tcp --dport 43 -j REDIRECT --to-port 1043
-```
+
 
 Additional notes
 ----------------

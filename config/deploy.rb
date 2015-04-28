@@ -35,7 +35,8 @@ end
 # They will be linked in the 'deploy:link_shared_paths' step.
 set :shared_paths, [
   'config/database.yml',
-  'log'
+  'log',
+  'tmp/pids'
 ]
 
 # Optional settings:
@@ -57,6 +58,13 @@ task setup: :environment do
 
   queue! %(mkdir -p "#{deploy_to}/shared/config")
   queue! %(chmod g+rx,u+rwx "#{deploy_to}/shared/config")
+
+  queue! %(mkdir -p "#{deploy_to}/shared/tmp")
+  queue! %(chmod g+rx,u+rwx "#{deploy_to}/shared/tmp")
+
+  queue! %(mkdir -p "#{deploy_to}/shared/tmp/pids")
+  queue! %(chmod g+rx,u+rwx "#{deploy_to}/shared/tmp/pids")
+
   deploy do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'

@@ -23,7 +23,7 @@ Daemons.run_proc(
     logfilename: 'whois.log',
     log_dir: Dir.pwd + '/log',
     monitor: true,
-    multiple: false, # multiple needs more testing, currently stop does not terminate mulitple pids
+    multiple: false, # multiple needs proxy and command stop not working correctly
     dir: 'tmp/pid'
   ) do
 

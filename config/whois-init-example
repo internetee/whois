@@ -1,0 +1,53 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          Whois server
+# Required-Start:    $all
+# Required-Stop:     $network $local_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start the Whois server
+# Description:       Enable Whois server
+### END INIT INFO
+
+set -u
+set -e
+
+#
+# Change these to match your server:
+#
+# Make sure that all paths are correct.
+#
+APP_HOME="/home/registry/whois"
+APP_ROOT="$APP_HOME/current"
+APP_USER=whois
+ENV=production
+
+CMD="cd $APP_ROOT && WHOIS_ENV=$ENV bundle exec ruby whois.rb "
+
+cd $APP_ROOT || exit 1
+
+case ${1-help} in
+status)
+        su - $APP_USER -c "$CMD status"
+        ;;
+start)
+        su - $APP_USER -c "$CMD start"
+        ;;
+stop)
+        su - $APP_USER -c "$CMD stop"
+        ;;
+force-stop)
+        su - $APP_USER -c "$CMD stop -f"
+        ;;
+reload)
+        su - $APP_USER -c "$CMD reload"
+        ;;
+restart)
+        su - $APP_USER -c "$CMD restart"
+        ;;
+
+*)
+        echo >&2 "Usage: $0 <status|start|stop|force-stop|reload|restart>"
+        exit 1
+        ;;
+esac
