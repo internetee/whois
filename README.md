@@ -12,7 +12,7 @@ Before demo install, please ensure you have rbenv and postgres installed.
     git clone https://github.com/internetee/whois.git
     cd whois
     bundle
-    cp config/database.yml-example config/database.yml # and edit it
+    cp config/database-example.yml config/database.yml # and edit it
 
     # create postgres database, example:
     # create database whois owner whois encoding 'UTF-8' LC_COLLATE 'et_EE.utf8' LC_CTYPE 'et_EE.utf8' template template0;

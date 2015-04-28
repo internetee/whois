@@ -9,10 +9,11 @@ require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-set :domain, 'whois-st'
+set :domain, 'registry-st'
 set :deploy_to, '$HOME/whois'
 set :repository, 'https://github.com/domify/whois' # dev
 set :branch, 'master'
+set :rails_env, 'production'
 
 # staging
 task :st do
@@ -56,13 +57,12 @@ task setup: :environment do
 
   queue! %(mkdir -p "#{deploy_to}/shared/config")
   queue! %(chmod g+rx,u+rwx "#{deploy_to}/shared/config")
-
-  queue! %(touch "#{deploy_to}/shared/config/database.yml")
   deploy do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     to :launch do
       invoke :'bundle:install'
+      queue! %(cp -n config/database-example.yml #{deploy_to}/shared/config/database.yml)
       queue %(echo '\n  NB! Please edit 'shared/config/database.yml'\n')
     end
   end
@@ -97,5 +97,5 @@ end
 
 desc 'Restart whois server'
 task restart: :environment do
-  queue "cd #{deploy_to}/current && WHOIS_ENV=production bundle exec ruby whois.rb restart"
+  # queue "cd #{deploy_to}/current && WHOIS_ENV=production bundle exec ruby whois.rb restart"
 end
