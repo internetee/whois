@@ -20,7 +20,7 @@ task :st do
   set :domain, 'whois-st'
   set :deploy_to, '$HOME/whois'
   set :repository, 'https://github.com/internetee/whois' # production
-  set :branch, 'master'
+  set :branch, 'staging'
 end
 
 # production
