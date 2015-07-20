@@ -42,7 +42,9 @@ At your local machine:
     git clone https://github.com/internetee/whois.git
     cd whois
     bundle
-    mina pr setup
+    gem install mina # or any other deploy tool
+    cp config/deploy-example.rb config/deploy.rb # and edit it
+    mina pr setup 
     rake db:schema:load db=production # load schema to production db
 
 Add init script and edit it:
