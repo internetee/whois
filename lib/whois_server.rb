@@ -29,12 +29,12 @@ module WhoisServer
     ip = Socket.unpack_sockaddr_in(get_peername)
     whois_record = WhoisRecord.find_by(name: data.strip)    
 
-    logger.info "#{ip}: requested: #{data} [found record with id: #{whois_record.try(:id)}]"
+    logger.info "#{ip}: requested: #{data} [Record found with id: #{whois_record.try(:id)}]"
     if whois_record.nil?
-      logger.info "#{ip}: No record found for #{data}"
+      logger.info "#{ip}: requested: #{data} [No record found]"
       send_data no_entries_msg
     elsif whois_record.body.blank?
-      logger.info "#{ip}: No whois body for record id #{whois_record.try(:id)}"
+      logger.info "#{ip}: requested: #{data} [Record found with id: #{whois_record.try(:id)} but body was EMPTY]"
       send_data no_body_msg 
     else
       send_data whois_record.body
