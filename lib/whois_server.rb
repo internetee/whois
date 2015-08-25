@@ -33,13 +33,13 @@ module WhoisServer
     whois_record = WhoisRecord.find_by(name: name)    
 
     if whois_record.nil?
-      logger.info "#{ip}: requested: #{data} [No record found]"
+      logger.info "#{ip}: requested: #{data} [searched by: #{name}; No record found]"
       send_data no_entries_msg
     elsif whois_record.body.blank?
-      logger.info "#{ip}: requested: #{data} [Record found with id: #{whois_record.try(:id)} but body was EMPTY]"
+      logger.info "#{ip}: requested: #{data} [searched by: #{name}; Record found with id: #{whois_record.try(:id)} but body was EMPTY]"
       send_data no_body_msg 
     else
-      logger.info "#{ip}: requested: #{data} [Record found with id: #{whois_record.try(:id)}]"
+      logger.info "#{ip}: requested: #{data} [searched by: #{name}; Record found with id: #{whois_record.try(:id)}]"
       send_data whois_record.body
     end
     close_connection_after_writing
