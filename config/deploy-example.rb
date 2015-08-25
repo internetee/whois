@@ -105,6 +105,8 @@ end
 
 desc 'Restart whois server'
 task restart: :environment do
-  queue "/etc/init.d/whois stop"
-  queue "/etc/init.d/whois start"
+  # Whois start, stop or restart needs ROOT user.
+  # One way is to add your user to not request password, example sudoers entry:
+  # whois ALL=(ALL:ALL) ALL, NOPASSWD:/etc/init.d/whois
+  queue "sudo /etc/init.d/whois stop && sudo /etc/init.d/whois start"
 end
