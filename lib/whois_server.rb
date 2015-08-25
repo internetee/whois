@@ -27,7 +27,10 @@ module WhoisServer
   def receive_data(data)
     connection
     ip = Socket.unpack_sockaddr_in(get_peername)
-    whois_record = WhoisRecord.find_by(name: data.strip)    
+    name = data.strip
+    name = name.downcase
+    name = SimpleIDN.to_unicode(name)
+    whois_record = WhoisRecord.find_by(name: name)    
 
     if whois_record.nil?
       logger.info "#{ip}: requested: #{data} [No record found]"

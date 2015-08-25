@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 # core
 gem 'eventmachine', '~> 1.0.4'
+gem 'simpleidn', '~> 0.0.5' # For punycode
 
 # database
 gem 'activerecord', '~> 4.2.0'
