@@ -19,7 +19,8 @@ Before demo install, please ensure you have rbenv and postgres installed.
 
     rake db:setup
     ruby whois.rb run # or start for daemon, other commands: status start stop run --help
-    whois hello.ee -h localhost -p 1043 # by default whois run on port 1043
+    sudo apt-get install whois
+    whois hello.ee -h localhost -p 1043 # by default whois run on port 43
 
 You should receive 
 

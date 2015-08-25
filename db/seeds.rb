@@ -1,3 +1,3 @@
-load 'app/models/domain.rb'
-Domain.create(name: 'hello.ee', whois_body: 'Hello from whois server!')
-Domain.create(name: 'test.ee', whois_body: 'Hello from test.ee domain!')
+load 'app/models/whois_record.rb'
+WhoisRecord.create(name: 'hello.ee', body: 'Hello from whois server!')
+WhoisRecord.create(name: 'test.ee', body: 'Hello from test.ee domain!')
