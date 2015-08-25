@@ -9,7 +9,7 @@ require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-set :domain, 'registry-st'
+set :domain, 'registry'
 set :deploy_to, '$HOME/whois'
 set :repository, 'https://github.com/domify/whois' # dev
 set :branch, 'master'
@@ -105,5 +105,6 @@ end
 
 desc 'Restart whois server'
 task restart: :environment do
-  # queue "cd #{deploy_to}/current && WHOIS_ENV=production bundle exec ruby whois.rb restart"
+  queue "/etc/init.d/whois stop"
+  queue "/etc/init.d/whois start"
 end
