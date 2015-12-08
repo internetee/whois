@@ -5,9 +5,9 @@ gem 'eventmachine', '~> 1.0.4'
 gem 'simpleidn', '~> 0.0.5' # For punycode
 
 # database
-gem 'activerecord', '~> 4.2.0'
+gem 'activerecord', '~> 4.2.4'
 gem 'pg',           '~> 0.18.0'
-gem 'active_record_migrations', '~> 4.2.0.1'
+gem 'active_record_migrations', '~> 4.2.4.1'
 
 gem 'daemons', '~> 1.2.2'
 
