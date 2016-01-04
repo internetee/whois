@@ -30,7 +30,7 @@ module WhoisServer
       ip = Socket.unpack_sockaddr_in(get_peername)
     rescue Exception => e
       logger.error("uncaught #{e} exception while handling connection: #{e.message}")
-     close_connection
+      close_connection
     end
 
     name = data.strip
