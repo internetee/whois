@@ -27,9 +27,9 @@ module WhoisServer
   def receive_data(data)
     connection
     begin
-    ip = Socket.unpack_sockaddr_in(get_peername)
+      ip = Socket.unpack_sockaddr_in(get_peername)
     rescue Exception => e
-     logger.error("uncaught #{e} exception while handling connection: #{e.message}")
+      logger.error("uncaught #{e} exception while handling connection: #{e.message}")
      close_connection
     end
 
