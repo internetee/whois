@@ -10,9 +10,11 @@ AllCops:
     - 'spec/support/epp.rb'
     - 'spec/support/epp_contact_xml_builder.rb'
     - 'vendor/bundle/**/*'
+    # mina deploy example
+    - 'config/deploy-example.rb'
 
 Metrics/LineLength:
-  Max: 120
+  Max: 135
 
 Metrics/MethodLength:
   Max: 25 # default 10
