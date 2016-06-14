@@ -1,3 +1,7 @@
+14.06.2016
+
+* added syslogger
+
 20.07.2015
 
 * Example mina/deploy.rb renamed to mina/deploy-example.rb in order to not overwrite local deploy scripts
