@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 # core
 gem 'eventmachine', '~> 1.0.9'
 gem 'simpleidn', '~> 0.0.6' # For punycode
+gem 'SyslogLogger', '2.0', require: 'syslog/logger'
 
 # database
 gem 'activerecord', '~> 4.2.5.2'
