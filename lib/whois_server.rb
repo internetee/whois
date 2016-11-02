@@ -38,7 +38,7 @@ module WhoisServer
     invalid_data = !validator.valid?
 
     if invalid_data
-      logger.info "#{ip}: requested: #{data} [invalid encoding]"
+      logger.info "#{ip}: requested domain name is not in utf-8"
       send_data(invalid_encoding_msg)
       close_connection_after_writing
       return
