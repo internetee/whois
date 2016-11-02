@@ -21,3 +21,7 @@ group :development do
   # deploy
   gem 'mina', '~> 0.3.1' # for fast deployment
 end
+
+group :development, :test do
+  gem 'rspec'
+end
