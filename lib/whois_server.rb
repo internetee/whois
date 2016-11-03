@@ -4,6 +4,7 @@ require 'active_record'
 require 'yaml'
 require 'syslog/logger'
 load File.expand_path('../../app/models/whois_record.rb', __FILE__)
+require_relative '../app/validators/unicode_validator'
 
 module WhoisServer
   def logger
@@ -33,17 +34,27 @@ module WhoisServer
       close_connection
     end
 
+    validator = UnicodeValidator.new(data)
+    invalid_data = !validator.valid?
+
+    if invalid_data
+      logger.info "#{ip}: requested domain name is not in utf-8"
+      send_data(invalid_encoding_msg)
+      close_connection_after_writing
+      return
+    end
+
     name = data.strip
     name = name.downcase
     name = SimpleIDN.to_unicode(name)
-    whois_record = WhoisRecord.find_by(name: name)    
+    whois_record = WhoisRecord.find_by(name: name)
 
     if whois_record.nil?
       logger.info "#{ip}: requested: #{data} [searched by: #{name}; No record found]"
       send_data no_entries_msg
     elsif whois_record.body.blank?
       logger.info "#{ip}: requested: #{data} [searched by: #{name}; Record found with id: #{whois_record.try(:id)} but body was EMPTY]"
-      send_data no_body_msg 
+      send_data no_body_msg
     else
       logger.info "#{ip}: requested: #{data} [searched by: #{name}; Record found with id: #{whois_record.try(:id)}]"
       send_data whois_record.body
@@ -59,6 +70,11 @@ module WhoisServer
 
   def no_body_msg
     "\nThere was a technical issue with whois body, please try again later!" +
+    footer_msg
+  end
+
+  def invalid_encoding_msg
+    "\nERROR: invalid encoding, please use utf-8" +
     footer_msg
   end
 
