@@ -1,3 +1,7 @@
+03.11.2016
+
+* validate input to be legal utf-8
+
 15.06.2016
 
 * added syslogger
