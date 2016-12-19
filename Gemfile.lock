@@ -115,7 +115,7 @@ PLATFORMS
 
 DEPENDENCIES
   SyslogLogger (= 2.0)
-  activE_record_migrations (~> 4.2.5.2.1)
+  active_record_migrations (~> 4.2.5.2.1)
   activerecord (~> 4.2.5.2)
   daemons (~> 1.2.3)
   eventmachine (~> 1.0.9)
