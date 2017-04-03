@@ -1,15 +1,14 @@
 source 'https://rubygems.org'
 
 # core
-gem 'eventmachine', '~> 1.0.9'
+gem 'eventmachine', '~> 1.2.0'
 gem 'simpleidn', '~> 0.0.6' # For punycode
 gem 'SyslogLogger', '2.0', require: 'syslog/logger'
 
 # database
-gem 'activerecord', '~> 4.2.5.2'
+gem 'activerecord', '~> 4.2.7.1'
 gem 'pg',           '~> 0.19.0'
-gem 'active_record_migrations', '~> 4.2.5.2.1'
-
+gem 'active_record_migrations', '5.0.0.1.pre.optimistic'
 gem 'daemons', '~> 1.2.3'
 
 group :development do
