@@ -13,6 +13,7 @@ Before demo install, please ensure you have rbenv and postgres installed.
     cd whois
     bundle
     cp config/database-example.yml config/database.yml # and edit it
+    cp env-example .env # and edit it according to your needs
 
     # create postgres database, example:
     # create database whois owner whois encoding 'UTF-8' LC_COLLATE 'et_EE.utf8' LC_CTYPE 'et_EE.utf8' template template0;

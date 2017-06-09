@@ -85,6 +85,6 @@ module WhoisServer
 end
 
 EventMachine.run do
-  EventMachine.start_server '0.0.0.0', 43, WhoisServer
+  EventMachine.start_server ENV['HOST'], ENV['PORT'], WhoisServer
   EventMachine.set_effective_user ENV['WHOIS_USER'] || `whoami`.strip
 end
