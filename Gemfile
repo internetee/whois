@@ -12,7 +12,7 @@ gem 'active_record_migrations', '5.0.0.1.pre.optimistic'
 gem 'daemons', '~> 1.2.3'
 
 group :development do
-  gem 'rubocop',               '~> 0.26.1'
+  gem 'rubocop'
 
   # debug
   gem 'pry', '~> 0.10.1'
