@@ -36,7 +36,8 @@ end
 set :shared_paths, [
   'config/database.yml',
   'log',
-  'tmp/pids'
+  'tmp/pids',
+  '.env'
 ]
 
 # Optional settings:
