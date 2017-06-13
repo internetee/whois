@@ -1,6 +1,8 @@
 require 'bundler/setup'
 require 'daemons'
 require 'simpleidn'
+require 'dotenv/load'
+
 
 root_path  = File.expand_path('.')
 whois_server = root_path + '/lib/whois_server.rb'

@@ -1,0 +1,3 @@
+# Rename this file to .env
+HOST="0.0.0.0"
+PORT="43"
