@@ -57,7 +57,7 @@ module WhoisServer
       send_data no_body_msg
     else
       logger.info "#{ip}: requested: #{data} [searched by: #{name}; Record found with id: #{whois_record.try(:id)}]"
-      send_data whois_record.body
+      send_data whois_record.unix_body
     end
     close_connection_after_writing
   end
