@@ -1,3 +1,6 @@
+08.09.2018
+* Upgrade Ruby to 2.4.4 [#31](https://github.com/internetee/whois/pull/31)
+
 05.09.2018
 * Added dockerfile [#29](https://github.com/internetee/whois/pull/29)
 
