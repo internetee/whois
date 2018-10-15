@@ -1,3 +1,6 @@
+15.10.2018
+* Nokogiri update 1.8.5 [#33](https://github.com/internetee/whois/pull/33)
+
 08.09.2018
 * Upgrade Ruby to 2.4.4 [#31](https://github.com/internetee/whois/pull/31)
 
