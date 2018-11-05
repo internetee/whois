@@ -21,6 +21,9 @@ config/deploy.rb
 /.bundle
 /vendor/bundle
 
+# Do not share secrets via git:
+.env
+
 # these should all be checked in to normalise the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset
 
