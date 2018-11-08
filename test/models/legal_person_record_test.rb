@@ -77,20 +77,6 @@ class LegalPersonRecordTest < Minitest::Test
         changed: "2018-04-25T14:10:41+03:00",
         delete: nil,
         disclaimer: "The information obtained through .ee WHOIS is subject to database protection according to the Estonian Copyright Act and international conventions. All rights are reserved to Estonian Internet Foundation. Search results may not be used for commercial,advertising, recompilation, repackaging, redistribution, reuse, obscuring or other similar activities. Downloading of information about domain names for the creation of your own database is not permitted. If any of the information from .ee WHOIS is transferred to a third party, it must be done in its entirety. This server must not be used as a backend for a search engine.",
-        disclosed: [
-          [
-            "email",
-            "test@test.com"
-          ],
-          [
-            "email",
-            "test@test.com"
-          ],
-          [
-            "email",
-            "test@test.com"
-          ]
-        ],
         dnssec_changed: nil,
         dnssec_keys: [
 
