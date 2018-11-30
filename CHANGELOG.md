@@ -1,3 +1,7 @@
+05.11.2018
+* Ruby update 2.4.5 [#35](https://github.com/internetee/whois/pull/35)
+* Loofah update 2.2.3 [#36](https://github.com/internetee/whois/pull/36)
+
 15.10.2018
 * Nokogiri update 1.8.5 [#33](https://github.com/internetee/whois/pull/33)
 
