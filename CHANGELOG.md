@@ -1,3 +1,7 @@
+03.12.2018
+* Rack update (CVE-2018-16471) [#41](https://github.com/internetee/whois/pull/41)
+* Remove unused Json key [#40](https://github.com/internetee/whois/pull/40)
+
 05.11.2018
 * Ruby update 2.4.5 [#35](https://github.com/internetee/whois/pull/35)
 * Loofah update 2.2.3 [#36](https://github.com/internetee/whois/pull/36)
