@@ -8,7 +8,6 @@ gem 'SyslogLogger', '2.0', require: 'syslog/logger'
 # database
 gem 'activerecord', '~> 4.2.7.1'
 gem 'pg',           '~> 0.19.0'
-gem 'active_record_migrations', '5.0.0.1.pre.optimistic'
 gem 'daemons', '~> 1.2.3'
 gem 'dotenv'
 
