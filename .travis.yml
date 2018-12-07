@@ -5,3 +5,7 @@ before_script:
   - ./cc-test-reporter before-build
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+services:
+  - postgresql
+addons:
+  postgresql: "9.4"
