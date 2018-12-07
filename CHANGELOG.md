@@ -1,4 +1,7 @@
-03.12.2018
+10.12.2018
+* Removed some unused files [#45](https://github.com/internetee/whois/pull/45)
+
+06.12.2018
 * Rack update (CVE-2018-16471) [#41](https://github.com/internetee/whois/pull/41)
 * Remove unused Json key [#40](https://github.com/internetee/whois/pull/40)
 
