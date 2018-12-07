@@ -16,23 +16,23 @@ outzone:    <%= json['outzone'].to_s.tr('T',' ').sub('+', ' +') %>
 delete:     <%= json['delete'].to_s.tr('T',' ').sub('+', ' +') %>
 
 Registrant:
-name:       Private Person
+name:       <%= registrant.attribute_disclosed?(:name) ? registrant.name : 'Private Person' %>
 email:      Not Disclosed - Visit www.internet.ee for webbased WHOIS
 changed:    Not Disclosed
 
-<%- if json['admin_contacts'].present? -%>
+<%- if admin_contacts.any? -%>
 Administrative contact:
-<%- for contact in json['admin_contacts'] -%>
-name:       Not Disclosed
+<%- admin_contacts.each do |contact| -%>
+name:       <%= contact.attribute_disclosed?(:name) ? contact.name : 'Not Disclosed' %>
 email:      Not Disclosed - Visit www.internet.ee for webbased WHOIS
 changed:    Not Disclosed
 <%- end -%>
 <%- end -%>
 
-<%- if json['tech_contacts'].present? -%>
+<%- if tech_contacts.any? -%>
 Technical contact:
-<%- for contact in json['tech_contacts'] -%>
-name:       Not Disclosed
+<%- tech_contacts.each do |contact|  -%>
+name:       <%= contact.attribute_disclosed?(:name) ? contact.name : 'Not Disclosed' %>
 email:      Not Disclosed - Visit www.internet.ee for webbased WHOIS
 changed:    Not Disclosed
 <%- end -%>
