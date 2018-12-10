@@ -1,4 +1,5 @@
-10.12.2018
+12.12.2018
+* Enable disclosable contact data [#44](https://github.com/internetee/whois/pull/44)
 * Removed some unused files [#45](https://github.com/internetee/whois/pull/45)
 
 06.12.2018
