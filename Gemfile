@@ -6,7 +6,7 @@ gem 'simpleidn', '~> 0.0.6' # For punycode
 gem 'SyslogLogger', '2.0', require: 'syslog/logger'
 
 # database
-gem 'activerecord', '~> 4.2.7.1'
+gem 'activerecord', '~> 4.2'
 gem 'pg',           '~> 0.19.0'
 gem 'daemons', '~> 1.2.3'
 gem 'dotenv'
