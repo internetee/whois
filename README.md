@@ -1,5 +1,5 @@
 Whois server
-============
+------------
 
 Whois server build on top of ruby EventMachine.
 
