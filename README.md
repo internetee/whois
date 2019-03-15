@@ -7,7 +7,7 @@ Whois server build on top of ruby EventMachine.
 Demo Installation
 -----------------
 
-Before demo install, please ensure you have rbenv and postgres installed. 
+Before demo install, please ensure you have rbenv and postgres installed.
 
     git clone https://github.com/internetee/whois.git
     cd whois
@@ -18,12 +18,11 @@ Before demo install, please ensure you have rbenv and postgres installed.
     # create postgres database, example:
     # create database whois owner whois encoding 'UTF-8' LC_COLLATE 'et_EE.utf8' LC_CTYPE 'et_EE.utf8' template template0;
 
-    rake db:setup
     ruby whois.rb run # or start for daemon, other commands: status start stop run --help
     sudo apt-get install whois
     whois hello.ee -h localhost -p 1043 # by default whois run on port 43
 
-You should receive 
+You should receive
 
     Hello from whois server!
 
@@ -46,8 +45,7 @@ At your local machine:
     bundle
     gem install mina # or any other deploy tool
     cp config/deploy-example.rb config/deploy.rb # and edit it
-    mina pr setup 
-    rake db:schema:load db=production # load schema to production db
+    mina pr setup
 
 Add init script and edit it:
 
@@ -62,5 +60,5 @@ Start server
 Additional notes
 ----------------
 
-Request logs are going to syslog, however all daemon related errors are going to log directory because 
+Request logs are going to syslog, however all daemon related errors are going to log directory because
 daemon lib currently not supporting syslog, probably in future it will happen.
