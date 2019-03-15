@@ -1,3 +1,6 @@
+20.03.2019
+* Removed migrations library [#50](https://github.com/internetee/whois/pull/50)
+
 11.02.2019
 * Enable disclosable contact data [#44](https://github.com/internetee/whois/pull/44)
 * Removed some unused files [#45](https://github.com/internetee/whois/pull/45)
