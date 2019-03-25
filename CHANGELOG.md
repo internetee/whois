@@ -1,4 +1,5 @@
-20.03.2019
+25.03.2019
+* Added statuses for domainauctions [#48](https://github.com/internetee/whois/pull/48)
 * Removed migrations library [#50](https://github.com/internetee/whois/pull/50)
 
 11.02.2019
