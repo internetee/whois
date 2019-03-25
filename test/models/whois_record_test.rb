@@ -26,4 +26,43 @@ class WhoisRecordTest < Minitest::Test
     assert_equal 'Jack', contact.name
     assert_equal %w[one], contact.disclosed_attributes
   end
+
+  def test_returns_inactive_record_unix_body_when_domain_is_at_auction
+    @whois_record = WhoisRecord.new(name: 'shop.test', json: { name: 'shop.test',
+                                                               status: [WhoisRecord::AT_AUCTION] })
+
+    expected_output = begin
+      "Estonia .ee Top Level Domain WHOIS server\n" \
+      "\n" \
+      "Domain:\n" \
+      "name:       shop.test\n" \
+      "status:     AtAuction\n" \
+      "\n" \
+      "Estonia .ee Top Level Domain WHOIS server\n" \
+      "More information at http://internet.ee\n" \
+      ""
+    end
+
+    assert_equal expected_output, @whois_record.unix_body
+  end
+
+  def test_returns_inactive_record_unix_body_when_domain_is_pending_registration
+    @whois_record = WhoisRecord.new(name: 'shop.test',
+                                    json: { name: 'shop.test',
+                                            status: [WhoisRecord::PENDING_REGISTRATION] })
+
+    expected_output = begin
+      "Estonia .ee Top Level Domain WHOIS server\n" \
+      "\n" \
+      "Domain:\n" \
+      "name:       shop.test\n" \
+      "status:     PendingRegistration\n" \
+      "\n" \
+      "Estonia .ee Top Level Domain WHOIS server\n" \
+      "More information at http://internet.ee\n" \
+      ""
+    end
+
+    assert_equal expected_output, @whois_record.unix_body
+  end
 end

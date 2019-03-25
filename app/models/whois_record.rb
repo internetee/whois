@@ -5,9 +5,11 @@ class WhoisRecord < ActiveRecord::Base
   BLOCKED = 'Blocked'.freeze
   RESERVED = 'Reserved'.freeze
   DISCARDED = 'deleteCandidate'.freeze
+  AT_AUCTION = 'AtAuction'.freeze
+  PENDING_REGISTRATION = 'PendingRegistration'.freeze
 
   TEMPLATE_DIR = File.join(File.dirname(__FILE__), '../views/whois_record/').freeze
-  DISCARDED_TEMPLATE = (TEMPLATE_DIR + "discarded.erb").freeze
+  TEMPLATE_INACTIVE = (TEMPLATE_DIR + "inactive.erb").freeze
   LEGAL_PERSON_TEMPLATE = (TEMPLATE_DIR + "legal_person.erb").freeze
   PRIVATE_PERSON_TEMPLATE = (TEMPLATE_DIR + "private_person.erb").freeze
 
@@ -17,10 +19,10 @@ class WhoisRecord < ActiveRecord::Base
   end
 
   def template
-    if discarded_blocked_or_reserved?
-      DISCARDED_TEMPLATE
-    else
+    if active?
       private_or_legal_person_template
+    else
+      TEMPLATE_INACTIVE
     end
   end
 
@@ -60,7 +62,7 @@ class WhoisRecord < ActiveRecord::Base
     end
   end
 
-  def discarded_blocked_or_reserved?
-    !(([BLOCKED, RESERVED, DISCARDED] & json['status']).empty?)
+  def active?
+    (([BLOCKED, RESERVED, DISCARDED, AT_AUCTION, PENDING_REGISTRATION] & json['status']).empty?)
   end
 end
