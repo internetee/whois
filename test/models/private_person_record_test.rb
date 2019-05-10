@@ -123,7 +123,6 @@ class PrivatePersonRecordTest < Minitest::Test
         registrant_changed: "2018-04-25T14:10:39+03:00",
         registrant_kind: "priv",
         registrar: "test",
-        registrar_address: "test, test, test, test",
         registrar_changed: "2018-04-25T14:10:39+03:00",
         registrar_phone: nil,
         registrar_website: nil,
