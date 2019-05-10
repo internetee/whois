@@ -1,3 +1,6 @@
+10.05.2019
+* Registrar postal address is removed [#52](https://github.com/internetee/whois/pull/52)
+
 25.03.2019
 * Added statuses for domainauctions [#48](https://github.com/internetee/whois/pull/48)
 * Removed migrations library [#50](https://github.com/internetee/whois/pull/50)
