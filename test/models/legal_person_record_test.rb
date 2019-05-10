@@ -96,7 +96,6 @@ class LegalPersonRecordTest < Minitest::Test
         registrant_reg_no: 123,
         registrant_ident_country_code: "EE",
         registrar: "test",
-        registrar_address: "test, test, test, test",
         registrar_changed: "2018-04-25T14:10:39+03:00",
         registrar_phone: nil,
         registrar_website: nil,
