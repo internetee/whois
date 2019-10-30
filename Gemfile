@@ -7,9 +7,9 @@ gem 'SyslogLogger', '2.0', require: 'syslog/logger'
 
 # database
 gem 'activerecord', '~> 4.2'
-gem 'pg',           '~> 0.19.0'
 gem 'daemons', '~> 1.2.3'
 gem 'dotenv'
+gem 'pg', '~> 0.19.0'
 
 group :development do
   gem 'rubocop'
