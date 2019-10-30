@@ -21,6 +21,9 @@ before_script:
   - "chmod +x ./cc-test-reporter"
   - "./cc-test-reporter before-build"
   - "cp config/database_travis.yml config/database.yml"
+  - "env"
+  - "psql"
+  - "ls -lh"
 
 script:
   - "bundle exec rake test"
