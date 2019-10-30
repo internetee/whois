@@ -1,5 +1,5 @@
-FROM internetee/ruby:2.4
-MAINTAINER maciej.szlosarczyk@internet.ee
+FROM internetee/ruby:2.5
+LABEL maintainer="georg.kahestk@internet.ee"
 
 RUN apt-get update -y > /dev/null
 RUN apt-get install whois -y > /dev/null
