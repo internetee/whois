@@ -1,3 +1,6 @@
+04.03.2020
+* Bumped rake to 13.0.1 [#56](https://github.com/internetee/whois/pull/56)
+
 10.05.2019
 * Registrar postal address is removed [#52](https://github.com/internetee/whois/pull/52)
 
