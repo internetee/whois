@@ -1,3 +1,6 @@
+12.03.2020
+* Ruby upgrade to 2.6.5 [#58](https://github.com/internetee/whois/issues/58)
+
 04.03.2020
 * Bumped rake to 13.0.1 [#56](https://github.com/internetee/whois/pull/56)
 
