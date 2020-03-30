@@ -54,12 +54,30 @@ module WhoisServer
       send_data whois_record.unix_body
     else
       logger.info "#{ip}: requested: #{data} [searched by: #{name}; No record found]"
-      send_data no_entries_msg
+      provide_data_body(name)
     end
     close_connection_after_writing
   end
 
   private
+
+  def provide_data_body(domain_name)
+    return send_data(no_entries_msg) if domain_valid_format?(domain_name)
+
+    send_data(policy_error_msg)
+  end
+
+  def domain_valid_format?(domain_name)
+    domain_name_regexp = /\A[a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{2,61}\.
+    ([a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{2,61}\.)?[a-z0-9]{1,61}\z/x
+
+    formatted_domain_name = domain_name.strip.downcase
+    nil != (formatted_domain_name =~ domain_name_regexp)
+  end
+
+  def policy_error_msg
+    "\nPolicy error" + footer_msg
+  end
 
   def no_entries_msg
     "\nDomain not found" + footer_msg
