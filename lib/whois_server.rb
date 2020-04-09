@@ -76,8 +76,8 @@ module WhoisServer
   end
 
   def policy_error_msg
-    "\nPolicy error: please study \"Requirements for the registration of a Domain Name\" of .ee domain regulations. \
-https://www.internet.ee/domains/ee-domain-regulation#registration-of-domain-names" + footer_msg
+    "\nPolicy error: please study \"Requirements for the registration of a Domain Name\" of .ee domain regulations. " \
+    "https://www.internet.ee/domains/ee-domain-regulation#registration-of-domain-names" + footer_msg
   end
 
   def no_entries_msg
