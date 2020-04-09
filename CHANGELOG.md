@@ -1,3 +1,6 @@
+09.04.2020
+* Better error message for 1 letter and invalid domain searches [#55](https://github.com/internetee/whois/issues/55)
+
 12.03.2020
 * Ruby upgrade to 2.6.5 [#58](https://github.com/internetee/whois/issues/58)
 
