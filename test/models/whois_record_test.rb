@@ -65,4 +65,35 @@ class WhoisRecordTest < Minitest::Test
 
     assert_equal expected_output, @whois_record.unix_body
   end
+
+  def test_reserved_record_is_active_if_registered
+    @whois_record = WhoisRecord.new(name: 'shop.test',
+      json: { name: 'shop.test',
+              registered: Time.now,
+              status: [WhoisRecord::RESERVED] })
+    assert @whois_record.active?
+  end
+
+  def test_reserved_record_is_inactive_if_unregistered
+    @whois_record = WhoisRecord.new(name: 'shop.test',
+      json: { name: 'shop.test',
+              status: [WhoisRecord::RESERVED] })
+    assert !@whois_record.active?
+  end
+
+  def test_disputed_record_is_active_if_registered
+    @whois_record = WhoisRecord.new(name: 'shop.test',
+      json: { name: 'shop.test',
+              registered: Time.now,
+              status: [WhoisRecord::DISPUTED] })
+    assert @whois_record.active?
+  end
+
+  def test_disputed_record_is_inactive_if_unregistered
+    @whois_record = WhoisRecord.new(name: 'shop.test',
+      json: { name: 'shop.test',
+              status: [WhoisRecord::DISPUTED] })
+    assert !@whois_record.active?
+  end
+
 end
