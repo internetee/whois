@@ -1,3 +1,6 @@
+11.05.2020
+* Auction process due dates are now available over whois and rest-whois [#64](https://github.com/internetee/whois/pull/64)
+
 09.04.2020
 * Better error message for 1 letter and invalid domain searches [#55](https://github.com/internetee/whois/issues/55)
 
