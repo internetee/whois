@@ -5,10 +5,14 @@
 Estonia .ee Top Level Domain WHOIS server
 
 Domain:
-name:       <%= json['name'] %>
+name:                  <%= json['name'] %>
 <%- for st in Array(json['status']) -%>
-status:     <%= st %>
+status:                <%= st %>
 <%- end -%>
+<%- if json['registration_deadline'] -%>
+registration deadline: <%= json['registration_deadline'] %>
+<%- end -%>
+
 
 Estonia .ee Top Level Domain WHOIS server
 More information at http://internet.ee
