@@ -7,11 +7,14 @@ class WhoisRecord < ActiveRecord::Base
   DISCARDED = 'deleteCandidate'.freeze
   AT_AUCTION = 'AtAuction'.freeze
   PENDING_REGISTRATION = 'PendingRegistration'.freeze
+  DISPUTED = 'Disputed'.freeze
 
   TEMPLATE_DIR = File.join(File.dirname(__FILE__), '../views/whois_record/').freeze
   TEMPLATE_INACTIVE = (TEMPLATE_DIR + "inactive.erb").freeze
   LEGAL_PERSON_TEMPLATE = (TEMPLATE_DIR + "legal_person.erb").freeze
   PRIVATE_PERSON_TEMPLATE = (TEMPLATE_DIR + "private_person.erb").freeze
+
+  INACTIVE_STATUSES = [BLOCKED, DISCARDED, AT_AUCTION, PENDING_REGISTRATION].freeze
 
   def unix_body
     file = File.new(template)
@@ -38,6 +41,12 @@ class WhoisRecord < ActiveRecord::Base
     json['tech_contacts'].map { |serialized_contact| deserialize_contact(serialized_contact) }
   end
 
+  def active?
+    return false if json['registered'].nil?
+
+    (json['status'] & INACTIVE_STATUSES).empty?
+  end
+
   private
 
   def deserialize_registrant
@@ -60,9 +69,5 @@ class WhoisRecord < ActiveRecord::Base
     else
       LEGAL_PERSON_TEMPLATE
     end
-  end
-
-  def active?
-    (([BLOCKED, RESERVED, DISCARDED, AT_AUCTION, PENDING_REGISTRATION] & json['status']).empty?)
   end
 end
