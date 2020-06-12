@@ -1,7 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    SyslogLogger (2.0)
     activemodel (4.2.11.1)
       activesupport (= 4.2.11.1)
       builder (~> 3.1)
@@ -61,7 +60,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  SyslogLogger (= 2.0)
   activerecord (~> 4.2)
   daemons (~> 1.2.3)
   dotenv
