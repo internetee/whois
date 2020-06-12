@@ -1,3 +1,6 @@
+12.06.2020
+* Removed SysLogger gem, stdlib used instead [#47](https://github.com/internetee/whois/issues/47)
+
 22.05.2020
 * New disputed status for domains in disputed domains list [#15](https://github.com/internetee/whois/issues/15)
 
