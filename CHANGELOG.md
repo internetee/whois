@@ -1,3 +1,6 @@
+28.10.2020
+* Multi-language disclaimer for whois responses [#66](https://github.com/internetee/whois/pull/66)
+
 12.06.2020
 * Removed SysLogger gem, stdlib used instead [#47](https://github.com/internetee/whois/issues/47)
 
