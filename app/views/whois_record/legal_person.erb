@@ -1,7 +1,9 @@
-<%- if json['disclaimer'].present? -%>
+<%- if json['disclaimer'].present? && json['disclaimer'].is_a?(String) -%>
 <%= json['disclaimer'].scan(/\S.{0,72}\S(?=\s|$)|\S+/).join("\n") %>
-
+<%- elsif json['disclaimer'].present? && json['disclaimer'].is_a?(Hash) -%>
+<%= json.dig('disclaimer', I18n.locale.to_s).scan(/\S.{0,72}\S(?=\s|$)|\S+/).join("\n") %>
 <%- end -%>
+
 Estonia .ee Top Level Domain WHOIS server
 
 Domain:
