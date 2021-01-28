@@ -1,9 +1,9 @@
 default: &default
-  host: <%= ENV.fetch("APP_DBHOST") { "db" } %>
+  host: db
   adapter: postgresql
   encoding: unicode
-  username: <%= ENV.fetch("APP_DBUSER") { "postgres" } %>
-  password: <%= ENV.fetch("APP_DBPASS") {  } %>
+  username: postgres
+  password: 
 
 development:
   <<: *default

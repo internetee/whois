@@ -1,0 +1,32 @@
+# run tests in container
+# docker network create --driver bridge test-net
+# docker run -it -d --name db --network=test-net whoispostgres:1
+# docker run -it -d -e WHOIS_ENV=test -e APP_DBHOST=db --name whois --network=test-net whois:5 ruby whois.rb run
+
+# This is a basic workflow to help you get started with Actions
+
+name: build, test and deploy test environment on pr
+
+on:
+  push:
+    branches:
+    - add-build-test-pipeline
+  pull_request:
+    branches:
+    - main
+
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-20.04
+  
+    steps:
+
+        - uses: actions/checkout@v2
+
+        - name: Build image
+          run: |
+            docker build -t internetee/whois:RC$GITHUB_RUN_ID .
+            docker images
