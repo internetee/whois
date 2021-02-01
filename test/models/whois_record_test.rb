@@ -32,11 +32,13 @@ class WhoisRecordTest < Minitest::Test
                                                                status: [WhoisRecord::AT_AUCTION] })
 
     expected_output = begin
+      "\n" \
       "Estonia .ee Top Level Domain WHOIS server\n" \
       "\n" \
       "Domain:\n" \
-      "name:       shop.test\n" \
-      "status:     AtAuction\n" \
+      "name:                  shop.test\n" \
+      "status:                AtAuction\n" \
+      "\n" \
       "\n" \
       "Estonia .ee Top Level Domain WHOIS server\n" \
       "More information at http://internet.ee\n" \
@@ -52,11 +54,13 @@ class WhoisRecordTest < Minitest::Test
                                             status: [WhoisRecord::PENDING_REGISTRATION] })
 
     expected_output = begin
+      "\n"\
       "Estonia .ee Top Level Domain WHOIS server\n" \
       "\n" \
       "Domain:\n" \
-      "name:       shop.test\n" \
-      "status:     PendingRegistration\n" \
+      "name:                  shop.test\n" \
+      "status:                PendingRegistration\n" \
+      "\n" \
       "\n" \
       "Estonia .ee Top Level Domain WHOIS server\n" \
       "More information at http://internet.ee\n" \
