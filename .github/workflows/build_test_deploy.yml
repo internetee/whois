@@ -42,3 +42,5 @@ jobs:
             docker run -it -d --name db --network=test-net internetee/whois_tester_postgres:1
             docker run -it -d -e WHOIS_ENV=test -e APP_DBHOST=db --name whois --network=test-net $(cat TAG) ruby whois.rb run
             docker exec -i whois rake test
+            docker exec -i whois ./cc-test-reporter format-coverage --output coverage/codeclimate.json
+            docker exec -i whois cat coverage/codeclimate.json
