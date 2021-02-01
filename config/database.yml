@@ -11,7 +11,7 @@ development:
 
 test:
   <<: *default
-  database: registry_whois_test
+  database: registry_test
 
 staging:
   <<: *default
