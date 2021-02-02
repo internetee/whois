@@ -36,13 +36,16 @@ jobs:
             docker build -t $(cat TAG) .
         
         - name: Test
+          env:
+            CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
           run: |
             docker network create --driver bridge test-net
             docker run -d --name db --network=test-net internetee/whois_tester_postgres:1
-            docker run -d -e WHOIS_ENV=test -e APP_DBHOST=db -e GITHUB_ENV="$(cat GITHUB_ENV)" -e GIT_BRANCH=$GITHUB_REF --name whois --network=test-net $(cat TAG) tail -f /dev/null
+            docker run -d -e WHOIS_ENV=test -e APP_DBHOST=db -e GITHUB_ENV="$(cat GITHUB_ENV)" -e GIT_BRANCH=$GITHUB_REF -e CC_TEST_REPORTER_ID --name whois --network=test-net $(cat TAG) tail -f /dev/null
             docker exec -i whois rake test
 
-        - name: Get test results
+        - name: Get and upload test results
           run: |
             docker exec -i whois ./cc-test-reporter format-coverage --output coverage/codeclimate.json
-            docker exec -i whois cat coverage/codeclimate.json
+            docker exec -i whois ./cc-test-reporter sum-coverage coverage/codeclimate.json
+            docker exec -i whois ./cc-test-reporter upload-coverage
