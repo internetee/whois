@@ -26,10 +26,17 @@ jobs:
             echo "internetee/whois:RC_$SHORT_SHA" > TAG
 
         - name: Set ENV for codeclimate (push)
-          run: |
-            echo "GIT_BRANCH=$GITHUB_REF" >> GITHUB_ENV
-            echo "GIT_COMMIT_SHA=$GITHUB_SHA" >> GITHUB_ENV
           if: github.event_name == 'push'
+          run: |
+            echo "$GITHUB_REF" > GIT_BRANCH
+            echo "$GITHUB_SHA" > GIT_COMMIT_SHA
+
+        - name: Set ENV for codeclimate (pull request)
+          if: github.event_name == 'pull_request'
+          run: |
+            echo "$GITHUB_HEAD_REF" > GIT_BRANCH
+            echo "$(git rev-parse origin/$GITHUB_HEAD_REF)" > GIT_COMMIT_SHA
+          
 
         - name: Build image
           run: |
@@ -41,7 +48,7 @@ jobs:
           run: |
             docker network create --driver bridge test-net
             docker run -d --name db --network=test-net internetee/whois_tester_postgres:1
-            docker run -d -e WHOIS_ENV=test -e APP_DBHOST=db -e GITHUB_ENV="$(cat GITHUB_ENV)" -e GIT_BRANCH=$GITHUB_REF -e CC_TEST_REPORTER_ID --name whois --network=test-net $(cat TAG) tail -f /dev/null
+            docker run -d -e WHOIS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" -e GIT_BRANCH=$(cat GIT_BRANCH) -e CC_TEST_REPORTER_ID --name whois --network=test-net $(cat TAG) tail -f /dev/null
             docker exec -i whois rake test
 
         - name: Get and upload test results
