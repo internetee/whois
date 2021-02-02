@@ -12,9 +12,8 @@ on:
 
 jobs:
 
-  build:
+  build_and_test:
     runs-on: ubuntu-20.04
-    continue-on-error: true
   
     steps:
 
@@ -56,3 +55,11 @@ jobs:
             docker exec -i whois ./cc-test-reporter format-coverage --output coverage/codeclimate.json
             docker exec -i whois ./cc-test-reporter sum-coverage coverage/codeclimate.json
             docker exec -i whois ./cc-test-reporter upload-coverage
+
+        - name: Push Docker image to Docker hub
+          env:
+            USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          run: |
+            docker login -u "$USERNAME" -p "$PASSWORD"
+            docker push $(cat TAG)
