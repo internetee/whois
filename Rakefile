@@ -9,10 +9,9 @@ namespace :db do
 
   desc "Create the database"
   task :create do
-    ActiveRecord::Base.establish_connection(db)
+    ActiveRecord::Base.establish_connection(db.except('database'))
     ActiveRecord::Base.connection.create_database(db['database'])
 
-    load 'db/schema.rb'
     puts "Database created."
   end
 
