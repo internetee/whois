@@ -46,8 +46,11 @@ jobs:
             CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
           run: |
             docker network create --driver bridge test-net
-            docker run -d --name db --network=test-net internetee/whois_tester_postgres:1
-            docker run -d -e WHOIS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" -e GIT_BRANCH=$(cat GIT_BRANCH) -e CC_TEST_REPORTER_ID --name whois --network=test-net $(cat TAG) tail -f /dev/null
+            docker run -d --name db --network=test-net postgres:9.4
+            docker run -d -e WHOIS_ENV=test -e RAILS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" -e GIT_BRANCH=$(cat GIT_BRANCH) -e CC_TEST_REPORTER_ID --name whois --network=test-net $(cat TAG) tail -f /dev/null
+            docker exec -i whois apt-get install iputils-ping & ping db
+            docker exec -i whois rake db:create
+            docker exec -i whois rake db:schema:load
             docker exec -i whois rake test
 
         - name: Get and upload test results
