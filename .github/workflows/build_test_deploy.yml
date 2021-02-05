@@ -66,3 +66,14 @@ jobs:
           run: |
             echo $PASSWORD | docker login -u "$USERNAME" --password-stdin
             docker push $(cat TAG)
+
+  deploy:      
+    runs-on: self-hosted
+    env:
+      K_CONFIG: ${{ secrets.KUBE_CONFIG }}
+    steps:
+      - name: Test connection with k8s cluster
+        run: |
+          echo $K_CONFIG | base64 -di > KUBECONFIG
+          export KUBECONFIG=(cat KUBECONFIG)
+          helm list -A
