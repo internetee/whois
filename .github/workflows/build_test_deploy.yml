@@ -67,13 +67,22 @@ jobs:
             echo $PASSWORD | docker login -u "$USERNAME" --password-stdin
             docker push $(cat TAG)
 
-  deploy:      
+  deploy:
+    needs: build_and_test 
     runs-on: self-hosted
     env:
       K_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
-      - name: Test connection with k8s cluster
+      - uses: actions/checkout@v2
+
+      - name: Set image tag
+        run: |
+          SHORT_SHA=$(git describe --always)
+          echo "RC_$SHORT_SHA" > TAG
+
+      - name: Upgrade whois in whois-testing
         run: |
           echo $K_CONFIG | base64 -di > KUBECONFIG
           export KUBECONFIG=(cat KUBECONFIG)
+          helm upgrade --install whois --set "image.tag=$(cat TAG)" charts --namespace=whois-testing
           helm list -A
