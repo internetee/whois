@@ -24,6 +24,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: APP_DBHOST
+              value: whois-test-db-postgresql
           ports:
             - name: whois
               containerPort: 43
