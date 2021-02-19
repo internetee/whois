@@ -1,7 +1,12 @@
 FROM internetee/ruby:2.6
 ARG TEST_REPORTER_VER='0.9.0'
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install whois -y > /dev/null
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install whois locales -y > /dev/null
+
+# Setting locale 
+RUN locale-gen et_EE.UTF-8
+ENV LANG et_EE.UTF-8   
+ENV LC_ALL et_EE.UTF-8
 
 RUN mkdir -p /opt/webapps/app/tmp/pids
 WORKDIR /opt/webapps/app
