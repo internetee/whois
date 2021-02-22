@@ -49,6 +49,9 @@ resources:
     cpu: 100m
     memory: 128Mi
 
+configmap:
+    database: whois-testing-db
+
 autoscaling:
   enabled: true
   minReplicas: 1

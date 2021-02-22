@@ -44,5 +44,12 @@ spec:
             - ruby
             - whois.rb
             - run
+          volumeMounts:
+          - name: database-config
+            mountPath: /opt/webapps/app/config
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: database-config
+          configMap: 
+            name: {{ .Values.configmap.database }}
