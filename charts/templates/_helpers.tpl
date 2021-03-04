@@ -48,6 +48,7 @@ Selector labels
 {{- define "whois.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "whois.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.status: {{ .Values.app.status }}
 {{- end }}
 
 {{/*

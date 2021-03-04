@@ -52,6 +52,9 @@ resources:
 configmap:
     database: whois-testing-db
 
+app:
+  status: "testing"
+
 autoscaling:
   enabled: true
   minReplicas: 1

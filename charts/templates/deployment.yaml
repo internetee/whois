@@ -4,6 +4,7 @@ metadata:
   name: {{ include "whois.fullname" . }}
   labels:
     {{- include "whois.labels" . | nindent 4 }}
+    app: wh
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
