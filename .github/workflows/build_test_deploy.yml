@@ -1,9 +1,6 @@
 name: build, test and deploy test environment on pr
 
 on:
-  push:
-    branches:
-    - add-build-test-pipeline
   pull_request:
     branches:
     - main
