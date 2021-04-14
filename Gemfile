@@ -22,4 +22,5 @@ end
 
 group :development, :test do
   gem 'minitest'
+  gem 'simplecov', '0.17.1', require: false
 end

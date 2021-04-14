@@ -1,0 +1,22 @@
+default: &default
+  host: db
+  adapter: postgresql
+  encoding: unicode
+  username: postgres
+  password: 
+
+development:
+  <<: *default
+  database: registry_whois_development
+
+test:
+  <<: *default
+  database: registry_test
+
+staging:
+  <<: *default
+  database: registry_whois_staging
+
+production:
+  <<: *default
+  database: registry_whois_production

@@ -10,11 +10,13 @@ class DiscardedRecordTest < Minitest::Test
 
   def test_discarded_record_template
     text = begin
+      "\n" \
       "Estonia .ee Top Level Domain WHOIS server\n" \
       "\n" \
       "Domain:\n" \
-      "name:       discarded-domain.test\n" \
-      "status:     deleteCandidate\n" \
+      "name:                  discarded-domain.test\n" \
+      "status:                deleteCandidate\n" \
+      "\n" \
       "\n" \
       "Estonia .ee Top Level Domain WHOIS server\n" \
       "More information at http://internet.ee\n" \

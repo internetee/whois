@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "whois.fullname" . }}
+  labels:
+    {{- include "whois.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: whois
+      protocol: TCP
+      name: whois
+  selector:
+    {{- include "whois.selectorLabels" . | nindent 4 }}
