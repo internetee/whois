@@ -4,7 +4,7 @@ on:
   push:
     branches:
     - add-build-test-pipeline
-    
+
   pull_request:
     branches:
     - master
@@ -46,7 +46,7 @@ jobs:
             CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
           run: |
             docker network create --driver bridge test-net
-            docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=db -p 5433:5432 --name db --network=test-net postgres:13.2
+            docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=db -p 5433:5432 --name db --network=test-net postgres:9.6
             sleep 5
             docker run -d -e WHOIS_ENV=test -e RAILS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" -e GIT_BRANCH=$(cat GIT_BRANCH) -e CC_TEST_REPORTER_ID --name whois --network=test-net $(cat TAG) tail -f /dev/null
             docker exec -i whois rake db:create
