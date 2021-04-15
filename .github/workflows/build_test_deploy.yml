@@ -3,7 +3,7 @@ name: build, test and deploy on pr
 on:
   pull_request:
     branches:
-    - main
+    - master
 
   workflow_dispatch:
 
