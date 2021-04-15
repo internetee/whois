@@ -64,7 +64,7 @@ jobs:
 
   deploy:
     needs: build_and_test 
-    runs-on: self-hosted
+    runs-on: [self-hosted, helm-kubectl]
     env:
       K_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
