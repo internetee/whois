@@ -5,7 +5,7 @@ gem 'eventmachine', '~> 1.2.0'
 gem 'simpleidn', '~> 0.0.6' # For punycode
 
 # database
-gem 'activerecord', '~> 6.1'
+gem 'activerecord', '~> 4.2'
 gem 'pg',           '~> 0.19.0'
 gem 'daemons', '~> 1.2.3'
 gem 'dotenv'
