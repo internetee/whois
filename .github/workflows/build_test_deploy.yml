@@ -39,7 +39,7 @@ jobs:
 
         - name: Build image
           run: |
-            docker build -t $(cat TAG) .
+            docker build -t $(cat TAG) -f Dockerfile.generic .
         
         - name: Test
           env:
