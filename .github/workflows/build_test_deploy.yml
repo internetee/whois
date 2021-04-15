@@ -52,8 +52,8 @@ jobs:
         - name: Get and upload test results
           run: |
             docker exec -i whois printenv
-            docker exec -i whois ./cc-test-reporter after-build --debug -t lcov --exit-code $?
             docker exec -i whois ./cc-test-reporter format-coverage --output coverage/codeclimate.json
+            docker exec -i whois ./cc-test-reporter after-build --debug -t coverage/codeclimate.json --exit-code $?
             docker exec -i whois ./cc-test-reporter sum-coverage coverage/codeclimate.json
             docker exec -i whois ./cc-test-reporter upload-coverage
 
