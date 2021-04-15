@@ -3,12 +3,9 @@ name: build, test and deploy on pr
 on:
   push:
     branches:
-<<<<<<< HEAD
     - will-tests-fail-2
-=======
     - add-build-test-pipeline
 
->>>>>>> add-build-test-pipeline
   pull_request:
     branches:
     - master
