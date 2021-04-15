@@ -1,6 +1,10 @@
 name: build, test and deploy on pr
 
 on:
+  push:
+    branches:
+    - add-build-test-pipeline
+    
   pull_request:
     branches:
     - master
