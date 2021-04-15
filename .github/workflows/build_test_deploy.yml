@@ -1,6 +1,9 @@
 name: build, test and deploy test environment on pr
 
 on:
+  push:
+    branches:
+    - will-tests-fail-2
   pull_request:
     branches:
     - main
