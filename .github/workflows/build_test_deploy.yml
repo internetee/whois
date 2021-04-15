@@ -48,6 +48,7 @@ jobs:
             docker exec -i whois rake db:create
             docker exec -i whois rake db:schema:load
             docker exec -i whois rake test
+            docker exec -i whois ls -l
 
         - name: Get and upload test results
           run: |
