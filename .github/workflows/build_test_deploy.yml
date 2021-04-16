@@ -62,6 +62,6 @@ jobs:
 
       - name: Upgrade whois in whois-testing
         run: |
-          echo $K_CONFIG | base64 -di > KUBECONFIG
-          export KUBECONFIG=(cat KUBECONFIG)
+          echo $K_CONFIG | base64 -di > kubeconfig
+          export KUBECONFIG=./kubeconfig
           helm upgrade --install whois --set "image.tag=$(cat TAG)" charts --namespace=whois-testing
