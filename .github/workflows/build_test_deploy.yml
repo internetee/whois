@@ -1,9 +1,14 @@
 name: build, test and deploy on pr
 
 on:
+  push:
+    branches:
+      - will-tests-fail-2
+      - add-build-test-pipeline
+
   pull_request:
     branches:
-    - main
+      - master
 
   workflow_dispatch:
 
@@ -11,60 +16,40 @@ jobs:
 
   build_and_test:
     runs-on: ubuntu-20.04
-  
+
     steps:
 
-        - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-        - name: Set image tag
-          run: |
-            SHORT_SHA=$(git describe --always)
-            echo "ghcr.io/internetee/whois:RC_$SHORT_SHA" > TAG
+      - name: Set image tag
+        run: |
+          SHORT_SHA=$(git describe --always)
+          echo "ghcr.io/internetee/whois:RC_$SHORT_SHA" > TAG
 
-        - name: Set ENV for codeclimate (push)
-          if: github.event_name == 'push'
-          run: |
-            echo "$GITHUB_REF" > GIT_BRANCH
-            echo "$GITHUB_SHA" > GIT_COMMIT_SHA
+      - name: Build image
+        run: |
+          docker build -t $(cat TAG) -f Dockerfile.generic .
 
-        - name: Set ENV for codeclimate (pull request)
-          if: github.event_name == 'pull_request'
-          run: |
-            echo "$GITHUB_HEAD_REF" > GIT_BRANCH
-            echo "$(git rev-parse origin/$GITHUB_HEAD_REF)" > GIT_COMMIT_SHA
-          
-        - name: Build image
-          run: |
-            docker build -t $(cat TAG) -f Docerfile.generic .
-        
-        - name: Test
-          env:
-            CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-          run: |
-            docker network create --driver bridge test-net
-            docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=db -p 5433:5432 --name db --network=test-net postgres:13.2
-            sleep 5
-            docker run -d -e WHOIS_ENV=test -e RAILS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" -e GIT_BRANCH=$(cat GIT_BRANCH) -e CC_TEST_REPORTER_ID --name whois --network=test-net $(cat TAG) tail -f /dev/null
-            docker exec -i whois rake db:create
-            docker exec -i whois rake db:schema:load
-            docker exec -i whois rake test
+      - name: Test
+        run: |
+          docker network create --driver bridge test-net
+          docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=db -p 5433:5432 --name db --network=test-net postgres:9.6
+          sleep 5
+          docker run -d -e WHOIS_ENV=test -e RAILS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" -e GIT_BRANCH=$(cat GIT_BRANCH) --name whois --network=test-net $(cat TAG) tail -f /dev/null
+          docker exec -i whois rake db:create
+          docker exec -i whois rake db:schema:load
+          docker exec -i whois rake test
 
-        - name: Get and upload test results
-          run: |
-            docker exec -i whois ./cc-test-reporter format-coverage --output coverage/codeclimate.json
-            docker exec -i whois ./cc-test-reporter sum-coverage coverage/codeclimate.json
-            docker exec -i whois ./cc-test-reporter upload-coverage
-
-        - name: Push Docker image to gh container registry
-          env:
-            PASSWORD: ${{ secrets.GHCR }}
-          run: |
-            echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
-            docker push $(cat TAG)
+      - name: Push Docker image to gh container registry
+        env:
+          PASSWORD: ${{ secrets.GHCR }}
+        run: |
+          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
+          docker push $(cat TAG)
 
   deploy:
-    needs: build_and_test 
-    runs-on: self-hosted
+    needs: build_and_test
+    runs-on: [self-hosted, helm-kubectl]
     env:
       K_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
@@ -77,6 +62,6 @@ jobs:
 
       - name: Upgrade whois in whois-testing
         run: |
-          echo $K_CONFIG | base64 -di > KUBECONFIG
-          export KUBECONFIG=(cat KUBECONFIG)
+          echo $K_CONFIG | base64 -di > kubeconfig
+          export KUBECONFIG=./kubeconfig
           helm upgrade --install whois --set "image.tag=$(cat TAG)" charts --namespace=whois-testing
