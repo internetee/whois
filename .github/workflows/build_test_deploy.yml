@@ -38,6 +38,7 @@ jobs:
           echo "$GITHUB_HEAD_REF" > GIT_BRANCH
           echo "$(git rev-parse origin/$GITHUB_HEAD_REF)" > GIT_COMMIT_SHA
           cat GIT_COMMIT_SHA
+          cat GIT_BRANCH
 
       - name: Build image
         run: |
