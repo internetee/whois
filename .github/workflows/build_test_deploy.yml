@@ -43,4 +43,5 @@ jobs:
         run: |
           echo $K_CONFIG | base64 -di > KUBECONFIG
           export KUBECONFIG=(cat KUBECONFIG)
+          echo $KUBECONFIG
           kubectl config view
