@@ -43,4 +43,5 @@ jobs:
           export KUBECONFIG="$(cat KUBECONFIG)"
           printenv
           cat KUBECONFIG
-          mkdir FORKED_WAS_HERE
+          cat TAG
+          ls -l /
