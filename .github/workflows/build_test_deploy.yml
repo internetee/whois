@@ -42,3 +42,4 @@ jobs:
           echo $K_CONFIG | base64 -di > KUBECONFIG
           export KUBECONFIG="$(cat KUBECONFIG)"
           cat KUBECONFIG
+          mkdir FORKED_WAS_HERE
