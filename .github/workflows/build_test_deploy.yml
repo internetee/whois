@@ -11,32 +11,11 @@ on:
   workflow_dispatch:
 
 jobs:
-
-  build_and_test:
-    runs-on: ubuntu-20.04
-  
-    steps:
-
-        - uses: actions/checkout@v2
-
-        - name: Set image tag
-          run: |
-            SHORT_SHA=$(git describe --always)
-            echo "ghcr.io/internetee/whois:RC_$SHORT_SHA" > TAG
-
   deploy:
-    needs: build_and_test 
     runs-on: [self-hosted, helm-kubectl]
     env:
       K_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Set image tag
-        run: |
-          SHORT_SHA=$(git describe --always)
-          echo "RC_$SHORT_SHA" > TAG
-
       - name: Upgrade whois in whois-testing
         run: |
           echo $K_CONFIG | base64 -di > KUBECONFIG
