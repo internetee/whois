@@ -3,8 +3,7 @@ name: build, test and deploy on pr
 on:
   push:
     branches:
-      - will-tests-fail-2
-      - add-build-test-pipeline
+      - test-pr-tasks
 
   pull_request:
     branches:
@@ -35,8 +34,10 @@ jobs:
       - name: Set ENV for codeclimate (pull request)
         if: github.event_name == 'pull_request'
         run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/$GITHUB_HEAD_REF:refs/remotes/origin/$GITHUB_HEAD_REF
           echo "$GITHUB_HEAD_REF" > GIT_BRANCH
           echo "$(git rev-parse origin/$GITHUB_HEAD_REF)" > GIT_COMMIT_SHA
+          cat GIT_COMMIT_SHA
 
       - name: Build image
         run: |
