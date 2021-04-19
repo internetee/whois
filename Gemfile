@@ -14,7 +14,7 @@ group :development do
   gem 'rubocop'
 
   # debug
-  gem 'pry', '~> 0.10.1'
+  gem 'pry', '~> 0.14.1'
 
   # deploy
   gem 'mina', '~> 1.2.3' # for fast deployment

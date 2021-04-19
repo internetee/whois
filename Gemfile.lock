@@ -13,7 +13,7 @@ GEM
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
     ast (2.3.0)
-    coderay (1.1.1)
+    coderay (1.1.3)
     concurrent-ruby (1.1.8)
     daemons (1.3.1)
     docile (1.3.5)
@@ -21,7 +21,7 @@ GEM
     eventmachine (1.2.7)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
-    method_source (0.8.2)
+    method_source (1.0.0)
     mina (1.2.3)
       open4 (~> 1.3.4)
       rake
@@ -32,10 +32,9 @@ GEM
       ast (~> 2.2)
     pg (1.2.3)
     powerpack (0.1.1)
-    pry (0.10.4)
-      coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
+    pry (0.14.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     rainbow (2.2.2)
       rake
     rake (13.0.3)
@@ -71,7 +70,7 @@ DEPENDENCIES
   mina (~> 1.2.3)
   minitest
   pg (~> 1.2.3)
-  pry (~> 0.10.1)
+  pry (~> 0.14.1)
   rubocop
   simplecov (= 0.21.2)
   simpleidn (~> 0.0.6)
