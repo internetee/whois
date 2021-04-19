@@ -1,11 +1,6 @@
 name: build, test and deploy on pr
 
 on:
-  push:
-    branches:
-      - will-tests-fail-2
-      - add-build-test-pipeline
-
   pull_request:
     branches:
       - master
@@ -47,8 +42,18 @@ jobs:
           echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
           docker push $(cat TAG)
 
-  deploy:
+  temporarily_disable_deploy:
+    runs-on: ubuntu-20.04
     needs: build_and_test
+    steps:
+      - name: Set variable
+        run: echo "is_self-hosted_runner_safe=false" >> $GITHUB_ENV
+
+  deploy:
+    if: github.IS_SELF-HOSTED_RUNNER_SAFE == true
+    needs: 
+    - build_and_test
+    - temporarily_disable_deploy
     runs-on: [self-hosted, helm-kubectl]
     env:
       K_CONFIG: ${{ secrets.KUBE_CONFIG }}
