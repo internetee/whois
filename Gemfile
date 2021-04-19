@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
 # core
-gem 'eventmachine', '~> 1.2.0'
+gem 'eventmachine', '~> 1.2.7'
 gem 'simpleidn', '~> 0.0.6' # For punycode
 
 # database
 gem 'activerecord', '~> 6.1'
 gem 'pg',           '~> 1.2.3'
-gem 'daemons', '~> 1.2.3'
+gem 'daemons', '~> 1.3.1'
 gem 'dotenv'
 
 group :development do
@@ -17,7 +17,7 @@ group :development do
   gem 'pry', '~> 0.14.1'
 
   # deploy
-  gem 'mina', '~> 0.3.1' # for fast deployment
+  gem 'mina', '~> 1.2.3' # for fast deployment
 end
 
 group :development, :test do
