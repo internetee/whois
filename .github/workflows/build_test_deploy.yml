@@ -2,13 +2,6 @@ name: build, test and deploy on pr
 
 on:
   pull_request:
-    paths-ignore:
-      - 'Gemfile.lock'
-      - 'Gemfile'
-      - 'CHANGELOG.md'
-      - 'README.md'
-      - 'yarn.lock'
-      - 'package.json'
     branches:
       - master
 
