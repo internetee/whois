@@ -1,4 +1,4 @@
-FROM internetee/ruby:2.7
+FROM internetee/ruby:3.0
 MAINTAINER maciej.szlosarczyk@internet.ee
 
 RUN apt-get update -y > /dev/null
