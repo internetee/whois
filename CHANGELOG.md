@@ -1,3 +1,17 @@
+08.06.2021
+* Bump simplecov to 0.21.2 [#71](https://github.com/internetee/whois/pull/71)
+* Bump pg to 1.2.3 [#72](https://github.com/internetee/whois/pull/72)
+* Bump minitest to 5.14.4 [#73](https://github.com/internetee/whois/pull/73)
+* Bump dotenv to 2.7.6 [#74](https://github.com/internetee/whois/pull/74)
+* Bump eventmachine to 1.2.7 [#83](https://github.com/internetee/whois/pull/83)
+* Bump mina to 1.2.3 [#86](https://github.com/internetee/whois/pull/86)
+* Bump pry to 0.14.1 [#87](https://github.com/internetee/whois/pull/87)
+* Bump simpleidn to 0.2.1 [#89](https://github.com/internetee/whois/pull/89)
+* Bump dameons to 1.4.0 [#91](https://github.com/internetee/whois/pull/91)
+* Bump activerecord to 6.1.3.2 [#92](https://github.com/internetee/whois/pull/92)
+* Bump rubocop to 1.16.0 [#96](https://github.com/internetee/whois/pull/96)
+* CI task trigger cleanup [#95](https://github.com/internetee/whois/pull/95)
+
 28.10.2020
 * Multi-language disclaimer for whois responses [#66](https://github.com/internetee/whois/pull/66)
 
