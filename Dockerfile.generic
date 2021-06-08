@@ -1,4 +1,4 @@
-FROM internetee/ruby:2.6
+FROM internetee/ruby:3.0
 LABEL org.opencontainers.image.source=https://github.com/internetee/whois
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install whois locales -y > /dev/null
