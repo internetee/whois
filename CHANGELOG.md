@@ -1,5 +1,5 @@
 08.06.2021
-* Ruby update to 2.7.2 [#97](https://github.com/internetee/whois/pull/97)
+* Ruby update to 3.0.1 [#97](https://github.com/internetee/whois/pull/97)
 * Bump simplecov to 0.21.2 [#71](https://github.com/internetee/whois/pull/71)
 * Bump pg to 1.2.3 [#72](https://github.com/internetee/whois/pull/72)
 * Bump minitest to 5.14.4 [#73](https://github.com/internetee/whois/pull/73)
