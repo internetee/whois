@@ -1,3 +1,6 @@
+17.06.2021
+* Bump rubocom to 1.16.1 [#98](https://github.com/internetee/whois/pull/98)
+
 08.06.2021
 * Ruby update to 3.0.1 [#97](https://github.com/internetee/whois/pull/97)
 * Bump simplecov to 0.21.2 [#71](https://github.com/internetee/whois/pull/71)
