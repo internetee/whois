@@ -1,3 +1,6 @@
+29.06.2021
+* Bump activerecord to 6.1.4 [#100](https://github.com/internetee/whois/pull/100)
+
 17.06.2021
 * Bump rubocom to 1.16.1 [#98](https://github.com/internetee/whois/pull/98)
 
