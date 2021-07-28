@@ -1,3 +1,6 @@
+28.07.2021
+* Bump rubocop to 1.18.4 [#103](https://github.com/internetee/whois/pull/103)
+
 06.07.2021
 * Bump rubocob to 1.18.2 [#101](https://github.com/internetee/whois/pull/101)
 
