@@ -7,7 +7,7 @@ gem 'simpleidn', '~> 0.2.1' # For punycode
 # database
 gem 'activerecord', '~> 6.1'
 gem 'pg',           '~> 1.2.3'
-gem 'daemons', '~> 1.4.0'
+gem 'daemons', '~> 1.4.1'
 gem 'dotenv'
 
 group :development do
