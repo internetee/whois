@@ -1,3 +1,7 @@
+31.08.2021
+* Bump rubocop to 1.20.0 [#108](https://github.com/internetee/whois/pull/108)
+* Bump daemons to 1.4.1 [#109](https://github.com/internetee/whois/pull/109)
+
 25.08.2021
 * Bump mina to 1.2.4 [#104](https://github.com/internetee/whois/pull/104)
 * Bump activerecord to 6.1.4.1 [#106](https://github.com/internetee/whois/pull/106)
