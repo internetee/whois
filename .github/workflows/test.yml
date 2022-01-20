@@ -34,9 +34,9 @@ jobs:
       - name: Test
         run: |
           docker network create --driver bridge test-net
-          docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=db -p 5433:5432 --name db --network=test-net postgres:9.6
+          docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=db -p 5433:5432 --name db --network=test-net postgres:13
           sleep 5
-          docker run -d -e WHOIS_ENV=test -e RAILS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$GITHUB_SHA -e GIT_BRANCH=$GIT_BRANCH --name whois --network=test-net $TAG tail -f /dev/null
+          docker run -d -e WHOIS_ENV=test -e RAILS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$GITHUB_SHA" -e GIT_BRANCH="$GIT_BRANCH" --name whois --network=test-net $TAG tail -f /dev/null
           docker exec -i whois rake db:create
           docker exec -i whois rake db:schema:load
           docker exec -i whois rake test
