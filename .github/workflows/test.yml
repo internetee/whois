@@ -1,0 +1,32 @@
+name: Test the code 
+
+on:
+  - push
+
+jobs:
+
+  build_and_test:
+    runs-on: ubuntu-20.04
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Set image tag
+        run: |
+          SHORT_SHA=$(git describe --always)
+          echo "ghcr.io/internetee/whois:RC_$SHORT_SHA" > TAG
+
+      - name: Build image
+        run: |
+          docker build -t $(cat TAG) -f Dockerfile.generic .
+
+      - name: Test
+        run: |
+          docker network create --driver bridge test-net
+          docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=db -p 5433:5432 --name db --network=test-net postgres:9.6
+          sleep 5
+          docker run -d -e WHOIS_ENV=test -e RAILS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" -e GIT_BRANCH=$(cat GIT_BRANCH) --name whois --network=test-net $(cat TAG) tail -f /dev/null
+          docker exec -i whois rake db:create
+          docker exec -i whois rake db:schema:load
+          docker exec -i whois rake test
