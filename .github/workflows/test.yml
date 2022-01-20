@@ -15,17 +15,16 @@ jobs:
       - name: Set image tag
         run: |
           SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7)
-          echo "ghcr.io/internetee/whois:RC_$SHORT_SHA" > TAG
+          echo "TAG=ghcr.io/internetee/whois:RC_$SHORT_SHA" >> $GITHUB_ENV
 
       - name: Get branch name
         run: |
-          echo $GITHUB_REF
-          echo "*************"
           OIFS=$IFS
           IFS='/'
           read -a parts <<< "$GITHUB_REF"
           IFS=OIFS
           echo "BRANCH=${parts[2]}" >> $GITHUB_ENV
+          echo $BRANCH
       
       - name: Build image
         run: |
