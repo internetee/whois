@@ -14,19 +14,21 @@ jobs:
 
       - name: Set image tag
         run: |
-          SHORT_SHA=$(git describe --always)
+          SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7)
           echo "ghcr.io/internetee/whois:RC_$SHORT_SHA" > TAG
 
       - name: Build image
         run: |
-          docker build -t $(cat TAG) -f Dockerfile.generic .
+          echo "$GITHUB_REF
+          echo "*************"
+          docker build -t $TAG -f Dockerfile.generic .
 
       - name: Test
         run: |
           docker network create --driver bridge test-net
           docker run -d -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGERS_DB=db -p 5433:5432 --name db --network=test-net postgres:9.6
           sleep 5
-          docker run -d -e WHOIS_ENV=test -e RAILS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$(cat GIT_COMMIT_SHA)" -e GIT_BRANCH=$(cat GIT_BRANCH) --name whois --network=test-net $(cat TAG) tail -f /dev/null
+          docker run -d -e WHOIS_ENV=test -e RAILS_ENV=test -e APP_DBHOST=db -e GIT_COMMIT_SHA="$GITHUB_SHA -e GIT_BRANCH=$(cat GIT_BRANCH) --name whois --network=test-net $TAG tail -f /dev/null
           docker exec -i whois rake db:create
           docker exec -i whois rake db:schema:load
           docker exec -i whois rake test

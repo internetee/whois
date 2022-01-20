@@ -43,14 +43,14 @@ jobs:
 
       - name: Build image
         run: |
-          docker build -t $(cat TAG) -f Dockerfile.generic .
+          docker build -t $TAG -f Dockerfile.generic .
 
       - name: Push Docker image to gh container registry
         env:
           PASSWORD: ${{ secrets.GHCR }}
         run: |
           echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
-          docker push $(cat TAG)
+          docker push $TAG
 
       # - name: Set image tag
       #   run: |
