@@ -26,10 +26,10 @@ jobs:
           read -a parts <<< "$GITHUB_REF"
           IFS=OIFS
           echo "BRANCH=${parts[2]}" >> $GITHUB_ENV
-
+      
       - name: Build image
         run: |
-          docker build -t $TAG -e RAILS_ENV=test -f Dockerfile.generic .
+          docker build -t $TAG -f Dockerfile.generic .
 
       - name: Test
         run: |
