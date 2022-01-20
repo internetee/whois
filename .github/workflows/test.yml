@@ -29,6 +29,7 @@ jobs:
       
       - name: Build image
         run: |
+          echo $TAG
           docker build -t $TAG -f Dockerfile.generic .
 
       - name: Test
