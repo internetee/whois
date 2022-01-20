@@ -19,7 +19,7 @@ jobs:
 
       - name: Build image
         run: |
-          echo "$GITHUB_REF
+          echo $GITHUB_REF
           echo "*************"
           docker build -t $TAG -f Dockerfile.generic .
 
