@@ -117,7 +117,7 @@ jobs:
           export KUBECONFIG=./kubeconfig
           helm repo add eisrepo https://internetee.github.io/helm-charts/
           helm repo update
-          helm upgrade --install whois-"$PR_REF" --set "image.tag=$(cat TAG)" eisrepo/whois -n whois
+          helm upgrade --install whois-"$PR_REF" --set "image.tag=$SHORT_TAG" eisrepo/whois -n whois
           TOKEN=${{ secrets.CLOUD_TOKEN }} python3 ../../portOpener.py "$PR_REF" add whois
           cd ../..
           rm -r "$REPO"
