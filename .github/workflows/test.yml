@@ -10,8 +10,8 @@ jobs:
         image: postgres:13
         ports: ["5432:5432"]
         env:
-          POSTGRES_PASSWORD: password
-          POSTGRES_USERNAME: postgres
+          POSTGRES_PASSWORD: whois
+          POSTGRES_USERNAME: whois
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     strategy:
@@ -52,16 +52,16 @@ jobs:
 
     - name: Run Tests
       env:
-        PG_DATABASE: postgres
+        PG_DATABASE: registry_whois_test
         PG_HOST: localhost
-        PG_USER: postgres
-        PG_PASSWORD: password
+        PG_USER: whois
+        PG_PASSWORD: whois
         PG_PORT: ${{ job.services.postgres.ports[5432] }}
         RAILS_ENV: test
         COVERAGE: true
         DISABLE_SPRING: 1
       run: |
-        cp config/database_travis.yml config/database.yml
+        cp config/database-example.yml config/database.yml
         bundle exec rake db:setup:all
         bundle exec rails test test/*
     - name: Save coverage
