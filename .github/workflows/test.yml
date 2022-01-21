@@ -65,7 +65,7 @@ jobs:
         gem install bundler && bundle install --jobs 20 --retry 5
         bundle exec rake db:create
         bundle exec rake db:schema:load
-        bundle exec rails test test/*
+        bundle exec rake test test/*
 
     - name: Save coverage
       run: ./cc-test-reporter format-coverage --output coverage/codeclimate.${{ matrix.ruby }}.json
