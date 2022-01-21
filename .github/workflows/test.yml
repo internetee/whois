@@ -29,13 +29,6 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-    # - name: config bundler
-    #   run:  |
-    #     bundle config set without 'development staging production'
-    #     bundle config set deployment '[secure]'
-    #     bundle env
-    #     head -n1 $(which bundle)
-
     - name: Set ENV for codeclimate
       run: |
           echo "GIT_BRANCH=$GITHUB_REF" >> $GITHUB_ENV

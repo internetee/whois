@@ -4,9 +4,7 @@ on:
   pull_request:
     types: [closed, converted_to_draft, locked]
     paths-ignore:
-      - 'CHANGELOG.md'
-      - 'README.md'
-      - 'yarn.lock'
+      - '**.md'
 
 jobs:
   delete:
