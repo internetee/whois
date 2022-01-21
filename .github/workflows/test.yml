@@ -64,6 +64,7 @@ jobs:
         cp config/database-example.yml config/database.yml
         bundle install
         gem list
+        ls -l /home/runner/work/whois/whois/vendor/bundle/ruby/3.0.0/bin
         bundle exec rake db:create
         bundle exec rake db:schema:load
         bundle exec rails test test/*
