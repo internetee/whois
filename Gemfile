@@ -22,5 +22,5 @@ end
 
 group :development, :test do
   gem 'minitest'
-  gem 'simplecov', '0.21.2', require: false
+  gem 'simplecov', '0.17.1', require: false # CC last supported v0.17
 end
