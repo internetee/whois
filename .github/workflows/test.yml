@@ -10,8 +10,8 @@ jobs:
         image: postgres:13
         ports: ["5432:5432"]
         env:
-          POSTGRES_PASSWORD: whois
-          POSTGRES_USERNAME: whois
+          POSTGRES_PASSWORD: password
+          POSTGRES_USERNAME: postgres
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     strategy:
@@ -52,10 +52,10 @@ jobs:
 
     - name: Run Tests
       env:
-        PG_DATABASE: registry_whois_test
+        PG_DATABASE: postgres
         PG_HOST: localhost
-        POSTGRES_USER: whois
-        POSTGRES_PASSWORD: whois
+        PG_USER: postgres
+        PG_PASSWORD: pasword
         PG_PORT: ${{ job.services.postgres.ports[5432] }}
         RAILS_ENV: test
         COVERAGE: true
