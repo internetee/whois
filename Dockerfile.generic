@@ -1,5 +1,6 @@
 FROM internetee/ruby_base:3.0
 LABEL org.opencontainers.image.source=https://github.com/internetee/whois
+ARG ENV
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install whois locales -y > /dev/null
 
@@ -12,8 +13,16 @@ RUN mkdir -p /opt/webapps/app/tmp/pids
 WORKDIR /opt/webapps/app
 
 COPY . ./
+RUN \
+    if ["${ENV}" = "test"] ;\
+    then \
+    gem install bundler && bundle config set without 'development' && bundle install --jobs 20 --retry 5 \
+    fi
 
-RUN gem install bundler && bundle config set without 'development test' && bundle install --jobs 20 --retry 5
-
+RUN \
+    if ["${ENV}" != "test"] ;\
+    then \
+    gem install bundler && bundle config set without 'development test' && bundle install --jobs 20 --retry 5 \
+    fi
 
 EXPOSE 43
