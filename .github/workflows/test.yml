@@ -62,8 +62,8 @@ jobs:
         DISABLE_SPRING: 1
       run: |
         cp config/database-example.yml config/database.yml
-        rake db:create --trace
-        rake db:schema:load
+        bundle exec rake db:create
+        bundle exec rake db:schema:load
         bundle exec rails test test/*
     - name: Save coverage
       run: ./cc-test-reporter format-coverage --output coverage/codeclimate.${{ matrix.ruby }}.json
