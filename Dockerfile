@@ -1,5 +1,4 @@
-FROM internetee/ruby:3.0
-MAINTAINER maciej.szlosarczyk@internet.ee
+FROM internetee/ruby:3.0.3
 
 RUN apt-get update -y > /dev/null
 RUN apt-get install whois -y > /dev/null

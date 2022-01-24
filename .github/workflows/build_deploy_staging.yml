@@ -1,0 +1,134 @@
+name: build and deploy staging
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+    branches: [master]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+      - unlocked
+
+jobs:
+
+  build_and_test:
+
+    if: github.event.pull_request.draft == false
+
+    runs-on: ubuntu-20.04
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Login to container registry
+        env:
+          PASSWORD: ${{ secrets.GHCR }}
+        run: |
+          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
+
+      - name: Set image tag
+        run: |
+          SHORT_SHA=$(echo $GITHUB_SHA | cut -c 1-7)
+          echo "TAG=ghcr.io/internetee/whois:RC-$SHORT_SHA" >> $GITHUB_ENV
+          echo "SHORT_TAG=RC-$SHORT_SHA" >> $GITHUB_ENV
+
+      - name: Get pull request reference number
+        run: |
+          echo "$GITHUB_REF"
+          echo "PR_REF=$(cat /home/runner/work/_temp/_github_workflow/event.json | jq -r '.number')" >> $GITHUB_ENV
+
+      - name: Build image
+        run: |
+          docker build -t $TAG -f Dockerfile.generic .
+
+      - name: Push Docker image to gh container registry
+        env:
+          PASSWORD: ${{ secrets.GHCR }}
+        run: |
+          echo $PASSWORD | docker login ghcr.io -u eisbot --password-stdin
+          docker push $TAG
+
+      # - name: Set image tag
+      #   run: |
+      #     SHORT_SHA=$(git describe --always)
+      #     echo "RC_$SHORT_SHA" > TAG
+
+      # - name: Upgrade whois in whois-testing
+      #   env:
+      #     K_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      #   run: |
+      #     echo $K_CONFIG | base64 -di > kubeconfig
+      #     export KUBECONFIG=./kubeconfig
+      #     helm upgrade --install whois --set "image.tag=$(cat TAG)" charts --namespace=whois-testing
+
+      - name: Get repo name
+        run: |
+          OIFS=$IFS
+          IFS='/'
+          read -a parts <<< "$GITHUB_REPOSITORY"
+          IFS=OIFS
+          echo "REPO=${parts[1]}" >> $GITHUB_ENV
+
+      - name: Set deploy config
+        env:
+          OVPN: ${{ secrets.OVPN }}
+          VPN_PWD: ${{ secrets.VPN_PWD }}
+          P12: ${{ secrets.P12 }}
+          K_CONFIG: ${{ secrets.KUBE_CONFIG }}
+          SSH_KEY: ${{ secrets.EISBOT_SSH_KEY }}
+          EPPROXY_CONF: ${{ secrets.EPPROXY_CONF }}
+        run: |
+          echo $VPN_PWD | base64 -di > client.pwd
+          chmod 0600 client.pwd
+          echo $OVPN | base64 -di >  config.ovpn
+          echo $P12 | base64 -di > cert.p12
+          mkdir -p ~/.ssh
+          echo $SSH_KEY | base64 -di > ~/.ssh/key
+          chmod 0600 ~/.ssh/key
+          mkdir -p $REPO/$PR_REF
+          cd $REPO/$PR_REF
+          echo "$SHORT_SHA" > TAG
+          echo $K_CONFIG | base64 -di > kubeconfig
+          chmod 0600 kubeconfig
+
+      - name: Install Open VPN
+        run: sudo apt-get install openvpn
+
+      - name: Deploy from remote server
+        timeout-minutes: 5
+        env:
+          TOKEN: ${{ secrets.CLOUD_TOKEN }}
+        run: |
+          sudo openvpn --config config.ovpn --askpass client.pwd --auth-nocache --daemon&
+          sleep 15
+          ping -c 1 192.168.99.12
+          eval `ssh-agent`
+          touch ~/.ssh/known_hosts
+          ssh-add ~/.ssh/key
+          ssh-keyscan 192.168.99.12 > ~/.ssh/known_hosts
+          rsync -av "$REPO" runner@192.168.99.12:/home/runner/
+          ssh -T runner@192.168.99.12 << EOSSH
+          bash
+          cd "$REPO"/"$PR_REF"
+          export KUBECONFIG=./kubeconfig
+          helm repo add eisrepo https://internetee.github.io/helm-charts/
+          helm repo update
+          helm upgrade --install whois-"$PR_REF" --set "image.tag=$SHORT_TAG" eisrepo/whois -n whois
+          TOKEN=${{ secrets.CLOUD_TOKEN }} python3 ../../portOpener.py "$PR_REF" add whois
+          cd ../..
+          rm -r "$REPO"
+
+      - name: Notify developers
+        timeout-minutes: 1
+        env:
+          NOTIFICATION_URL: ${{ secrets.NOTIFICATION_URL}}
+        run: |
+          curl -i -X POST --data-urlencode 'payload={
+            "text": "\n# WHOIS:\n ##### pr from ['${{ github.head_ref }}'](https://github.com/internetee/whois/pull/'$PR_REF') to master has been deployed :tada:\n
+
+            "
+            }' $NOTIFICATION_URL

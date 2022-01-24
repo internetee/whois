@@ -1,0 +1,100 @@
+name: Test the ruby code 
+
+on:
+  - push
+
+jobs:
+  test:
+    services:
+      postgres:
+        image: postgres:13
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_USERNAME: postgres
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04]
+        ruby: [ '3.0.3'  ]
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
+    steps:
+
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+    - name: Set ENV for codeclimate
+      run: |
+          echo "GIT_BRANCH=$GITHUB_REF" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
+
+    - name: Prepare CodeClimate
+      env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      run: |
+        # TODO: remove latest and define exact version of test reporter
+        curl -LSs 'https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64' >./cc-test-reporter;
+        chmod +x ./cc-test-reporter
+        ./cc-test-reporter before-build
+
+    - name: Run Tests
+      env:
+        PG_DATABASE: postgres
+        PG_HOST: localhost
+        PG_USER: postgres
+        PG_PASSWORD: pasword
+        PG_PORT: ${{ job.services.postgres.ports[5432] }}
+        RAILS_ENV: test
+        COVERAGE: true
+        DISABLE_SPRING: 1
+      run: |
+        cp config/database-example.yml config/database.yml
+        gem install bundler && bundle install --jobs 20 --retry 5
+        bundle exec rake db:create
+        bundle exec rake db:schema:load
+        bundle exec rake test test/*
+
+    - name: Save coverage
+      run: ./cc-test-reporter format-coverage --output coverage/codeclimate.${{ matrix.ruby }}.json
+
+    - uses: actions/upload-artifact@v2.3.1
+      with:
+        name: coverage-${{ matrix.ruby }}
+        path: coverage/codeclimate.${{ matrix.ruby }}.json
+
+  upload_coverage:
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [ '3.0.3' ]
+    runs-on: ubuntu-20.04
+
+    env:
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      # TODO: remove latest and define exact version of test reporter
+      CC_TEST_REPORTER_URL: https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+
+    needs: test
+
+    steps:
+      - name: Download test coverage reporter
+        run: curl -L $CC_TEST_REPORTER_URL > cc-test-reporter
+
+      - name: Give test coverage reporter executable permissions
+        run: chmod +x cc-test-reporter
+
+      - uses: actions/download-artifact@v2.1.0
+        with:
+          name: coverage-${{ matrix.ruby }}
+          path: coverage
+
+      - name: Aggregate & upload results to Code Climate
+        run: |
+          ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
+          ./cc-test-reporter upload-coverage

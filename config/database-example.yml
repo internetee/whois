@@ -2,8 +2,9 @@ default: &default
   host: localhost
   adapter: postgresql
   encoding: unicode
-  username: whois
-  password: whois
+  pool: 5
+  username: postgres
+  password: password
 
 development:
   <<: *default
