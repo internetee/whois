@@ -121,3 +121,14 @@ jobs:
           TOKEN=${{ secrets.CLOUD_TOKEN }} python3 ../../portOpener.py "$PR_REF" add whois
           cd ../..
           rm -r "$REPO"
+
+      - name: Notify developers
+        timeout-minutes: 1
+        env:
+          NOTIFICATION_URL: ${{ secrets.NOTIFICATION_URL}}
+        run: |
+          curl -i -X POST --data-urlencode 'payload={
+            "text": "\n# WHOIS:\n ##### pr from ['${{ github.head_ref }}'](https://github.com/internetee/whois/pull/'$PR_REF') to master has been deployed :tada:\n
+
+            "
+            }' $NOTIFICATION_URL
