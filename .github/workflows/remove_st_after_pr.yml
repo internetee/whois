@@ -69,6 +69,7 @@ jobs:
           cd "$REPO"/"$PR_REF"
           export KUBECONFIG=./kubeconfig
           helm delete whois-"$PR_REF" -n whois
+          TOKEN=${{ secrets.CLOUD_TOKEN }} python3 ../../portOpener.py "$PR_REF" remove whois
           cd ../..
           rm -r "$REPO"
           
