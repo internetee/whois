@@ -129,6 +129,8 @@ jobs:
         run: |
           curl -i -X POST --data-urlencode 'payload={
             "text": "\n# WHOIS:\n ##### pr from ['${{ github.head_ref }}'](https://github.com/internetee/whois/pull/'$PR_REF') to master has been deployed :tada:\n
-
+            ```
+            whois -h riigi.pilv.tld.ee -p '$PR_REF' <domain name>
+            ```
             "
             }' $NOTIFICATION_URL
