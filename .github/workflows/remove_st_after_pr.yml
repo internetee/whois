@@ -33,7 +33,7 @@ jobs:
         env:
           OVPN: ${{ secrets.OVPN }}
           VPN_PWD: ${{ secrets.VPN_PWD }}
-          P12: ${{ secrets.P12 }}
+          P12: ${{ secrets.P12_2022 }}
           K_CONFIG: ${{ secrets.KUBE_CONFIG }}
           SSH_KEY: ${{ secrets.EISBOT_SSH_KEY }}
         run: |
