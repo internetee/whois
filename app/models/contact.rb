@@ -1,8 +1,11 @@
 class Contact
   include ActiveModel::Model
 
-  attr_accessor :name
-  attr_accessor :disclosed_attributes
+  attr_accessor :name, :email, :phone, :disclosed_attributes, :registrant_publishable
+
+  def publishable?
+    registrant_publishable
+  end
 
   def attribute_disclosed?(attribute)
     # It is needed for compatibility with old records, which have no such key.
