@@ -62,3 +62,4 @@ Additional notes
 
 Request logs are going to syslog, however all daemon related errors are going to log directory because
 daemon lib currently not supporting syslog, probably in future it will happen.
+

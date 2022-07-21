@@ -68,6 +68,7 @@ module WhoisServer
   end
 
   def domain_valid_format?(domain_name)
+    logger.info "Got domain name: #{domain_name}"
     domain_name_regexp = /\A[a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{2,61}\.
     ([a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{2,61}\.)?[a-z0-9]{1,61}\z/x
 
