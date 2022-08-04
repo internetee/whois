@@ -1,4 +1,4 @@
-FROM internetee/ruby:3.0.3
+FROM internetee/ruby:3.0.2
 
 RUN apt-get update -y > /dev/null
 RUN apt-get install whois -y > /dev/null
