@@ -21,8 +21,8 @@ Registrant:
 name:       <%= json['registrant'] %>
 org id:     <%= json['registrant_reg_no'] %>
 country:    <%= json['registrant_ident_country_code'] %>
-email:      <%= registrant.publishable? ? registrant.email : 'Not Disclosed - Visit www.internet.ee for webbased WHOIS' %>
-phone:      <%= registrant.publishable? ? registrant.phone : 'Not Disclosed - Visit www.internet.ee for webbased WHOIS' %>
+email:      <%= (registrant.publishable? && registrant.attribute_disclosed?(:email)) ? registrant.email : 'Not Disclosed - Visit www.internet.ee for webbased WHOIS' %>
+phone:      <%= (registrant.publishable? && registrant.attribute_disclosed?(:phone)) ? registrant.phone : 'Not Disclosed - Visit www.internet.ee for webbased WHOIS' %>
 changed:    <%= json['changed'].to_s.tr('T',' ').sub('+', ' +') %>
 
 <%- if json['admin_contacts'].present? -%>
