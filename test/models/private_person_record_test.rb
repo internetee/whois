@@ -65,10 +65,11 @@ class PrivatePersonRecordTest < Minitest::Test
   end
 
   def test_private_person_sensitive_data_when_registrant_is_publishable
-    @private_person_record.update!(json: @private_person_record.json.merge({ registrant_publishable: true }))
+    @private_person_record.update!(json: @private_person_record.json.merge({ registrant_publishable: true,
+                                                                             registrant_disclosed_attributes: %w[name email phone] }))
     whois_output = @private_person_record.unix_body
 
-    assert_includes whois_output, "Registrant:\nname:       Private Person"
+    assert_includes whois_output, "Registrant:\nname:       test"
     assert_includes whois_output, "email:      owner@privatedomain.test"
     assert_includes whois_output, "phone:      +555.555"
   end
