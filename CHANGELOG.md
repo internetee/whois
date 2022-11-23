@@ -1,3 +1,24 @@
+23.11.2022
+* Configure Renovate by @renovate in https://github.com/internetee/whois/pull/110
+* Update dependency ruby to v3.0.2 by @renovate in https://github.com/internetee/whois/pull/112
+* Revert "Update dependency ruby to v3.0.2" by @keijoraamat in https://github.com/internetee/whois/pull/113
+* Build and deploy on pr by @keijoraamat in https://github.com/internetee/whois/pull/114
+* Update dependency ruby to v3.1.0 by @renovate in https://github.com/internetee/whois/pull/117
+* Update dependency pg to ~> 1.3.0 by @renovate in https://github.com/internetee/whois/pull/116
+* Closes ports after closing pr by @keijoraamat in https://github.com/internetee/whois/pull/120
+* Update dependency ruby to v3.1.1 by @renovate in https://github.com/internetee/whois/pull/121
+* Update dependency activerecord to v7 by @renovate in https://github.com/internetee/whois/pull/119
+* Update actions/checkout action to v3 by @renovate in https://github.com/internetee/whois/pull/122
+* Update actions/download-artifact action to v3 by @renovate in https://github.com/internetee/whois/pull/123
+* Update actions/upload-artifact action to v3 by @renovate in https://github.com/internetee/whois/pull/124
+* Update dependency ruby to v3.1.2 by @renovate in https://github.com/internetee/whois/pull/125
+* Change renovate config to delay ruby version updates by @thiagoyoussef in https://github.com/internetee/whois/pull/126
+* Update actions/upload-artifact action to v3.1.0 by @renovate in https://github.com/internetee/whois/pull/127
+* Update dependency pg to ~> 1.4.0 by @renovate in https://github.com/internetee/whois/pull/128
+* Update dependency activerecord to v7.0.3.1 [SECURITY] by @renovate in https://github.com/internetee/whois/pull/130
+* Update postgres Docker tag to v14 by @renovate in https://github.com/internetee/whois/pull/132
+* Update actions/download-artifact action to v3.0.1 by @renovate in https://github.com/internetee/whois/pull/134
+
 31.08.2021
 * Bump rubocop to 1.20.0 [#108](https://github.com/internetee/whois/pull/108)
 * Bump daemons to 1.4.1 [#109](https://github.com/internetee/whois/pull/109)
