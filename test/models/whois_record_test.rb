@@ -4,9 +4,16 @@ require_relative '../../app/models/whois_record'
 class WhoisRecordTest < Minitest::Test
   def test_deserializes_registrant
     whois_record = WhoisRecord.new(json: { registrant: 'John',
-                                           registrant_disclosed_attributes: %w[one] })
+                                           email: 'owner@privatedomain.test',
+                                           phone: '+555.555',
+                                           registrant_disclosed_attributes: %w[one],
+                                           registrant_publishable: false })
+
     assert_equal 'John', whois_record.registrant.name
+    assert_equal 'owner@privatedomain.test', whois_record.registrant.email
+    assert_equal '+555.555', whois_record.registrant.phone
     assert_equal %w[one], whois_record.registrant.disclosed_attributes
+    refute whois_record.registrant.registrant_publishable
   end
 
   def test_deserializes_admin_contacts

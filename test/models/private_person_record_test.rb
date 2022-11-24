@@ -9,6 +9,8 @@ class PrivatePersonRecordTest < Minitest::Test
   end
 
   def test_private_person_record_template
+    @private_person_record.update!(json: @private_person_record.json.merge({ registrant_publishable: false }))
+
     text = begin
       "The information obtained through .ee WHOIS is subject to database\n" \
       "protection according to the Estonian Copyright Act and international\n" \
@@ -34,6 +36,7 @@ class PrivatePersonRecordTest < Minitest::Test
       "Registrant:\n" \
       "name:       Private Person\n" \
       "email:      Not Disclosed - Visit www.internet.ee for webbased WHOIS\n" \
+      "phone:      Not Disclosed - Visit www.internet.ee for webbased WHOIS\n" \
       "changed:    Not Disclosed\n" \
       "\n" \
       "Administrative contact:\n" \
@@ -59,6 +62,16 @@ class PrivatePersonRecordTest < Minitest::Test
     end
 
     assert_equal(text, @private_person_record.unix_body)
+  end
+
+  def test_private_person_sensitive_data_when_registrant_is_publishable
+    @private_person_record.update!(json: @private_person_record.json.merge({ registrant_publishable: true,
+                                                                             registrant_disclosed_attributes: %w[name email phone] }))
+    whois_output = @private_person_record.unix_body
+
+    assert_includes whois_output, "Registrant:\nname:       test"
+    assert_includes whois_output, "email:      owner@privatedomain.test"
+    assert_includes whois_output, "phone:      +555.555"
   end
 
   def test_contact_names_are_visible_when_disclosed_by_owner
@@ -111,6 +124,7 @@ class PrivatePersonRecordTest < Minitest::Test
 
         ],
         email: "owner@privatedomain.test",
+        phone: "+555.555",
         expire: "2018-07-25",
         name: "privatedomain.test",
         nameservers: [

@@ -19,7 +19,8 @@ delete:     <%= json['delete'].to_s.tr('T',' ').sub('+', ' +') %>
 
 Registrant:
 name:       <%= registrant.attribute_disclosed?(:name) ? registrant.name : 'Private Person' %>
-email:      Not Disclosed - Visit www.internet.ee for webbased WHOIS
+email:      <%= (registrant.publishable? && registrant.attribute_disclosed?(:email)) ? registrant.email : 'Not Disclosed - Visit www.internet.ee for webbased WHOIS' %>
+phone:      <%= (registrant.publishable? && registrant.attribute_disclosed?(:phone)) ? registrant.phone : 'Not Disclosed - Visit www.internet.ee for webbased WHOIS' %>
 changed:    Not Disclosed
 
 <%- if admin_contacts.any? -%>

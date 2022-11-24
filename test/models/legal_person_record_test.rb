@@ -9,6 +9,8 @@ class LegalPersonRecordTest < Minitest::Test
   end
 
   def test_legal_person_record_template
+    @legal_person_record.update!(json: @legal_person_record.json.merge({ registrant_publishable: false }))
+
     text = begin
       "The information obtained through .ee WHOIS is subject to database\n" \
       "protection according to the Estonian Copyright Act and international\n" \
@@ -36,6 +38,7 @@ class LegalPersonRecordTest < Minitest::Test
       "org id:     123\n" \
       "country:    EE\n" \
       "email:      Not Disclosed - Visit www.internet.ee for webbased WHOIS\n" \
+      "phone:      Not Disclosed - Visit www.internet.ee for webbased WHOIS\n" \
       "changed:    2018-04-25 14:10:41 +03:00\n" \
       "\n" \
       "Administrative contact:\n" \
@@ -63,6 +66,16 @@ class LegalPersonRecordTest < Minitest::Test
     assert_equal(text, @legal_person_record.unix_body)
   end
 
+  def test_legal_person_sensitive_data_when_registrant_is_publishable
+    @legal_person_record.update!(json: @legal_person_record.json.merge({ registrant_publishable: true,
+                                                                         registrant_disclosed_attributes: %w[name email phone] }))
+    whois_output = @legal_person_record.unix_body
+
+    assert_includes whois_output, "Registrant:\nname:       test"
+    assert_includes whois_output, "email:      owner@companydomain.test"
+    assert_includes whois_output, "phone:      +555.555"
+  end
+
   def create_legal_person_record
     @legal_person_record = WhoisRecord.new(
       name: 'private-domain.test',
@@ -82,6 +95,7 @@ class LegalPersonRecordTest < Minitest::Test
 
         ],
         email: "owner@companydomain.test",
+        phone: "+555.555",
         expire: "2018-07-25",
         name: "companydomain.test",
         nameservers: [
