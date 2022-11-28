@@ -18,7 +18,7 @@ class WhoisRecord < ActiveRecord::Base
 
   def unix_body
     file = File.new(template)
-    ERB.new(file.read, nil, "-").result(binding)
+    ERB.new(file.read, trim_mode: "-").result(binding)
   end
 
   def template
