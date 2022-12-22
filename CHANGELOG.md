@@ -1,3 +1,8 @@
+22.12.2022
+* Disclose additional registrant data https://github.com/internetee/whois/pull/131
+* monkey yaml patching https://github.com/internetee/whois/pull/137
+* Update actions/upload-artifact action to v3.1.1 https://github.com/internetee/whois/pull/135
+
 23.11.2022
 * Configure Renovate by @renovate in https://github.com/internetee/whois/pull/110
 * Update dependency ruby to v3.0.2 by @renovate in https://github.com/internetee/whois/pull/112
