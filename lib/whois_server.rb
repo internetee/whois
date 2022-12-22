@@ -6,6 +6,15 @@ require 'syslog/logger'
 load File.expand_path('../../app/models/whois_record.rb', __FILE__)
 require_relative '../app/validators/unicode_validator'
 
+module YAML
+  def self.properly_load_file(path)
+    YAML.load_file path, aliases: true
+  rescue ArgumentError
+    YAML.load_file path
+  end
+end
+
+
 module WhoisServer
   def logger
     @logger ||= Syslog::Logger.new 'whois'
@@ -14,7 +23,7 @@ module WhoisServer
   def dbconfig
     return @dbconfig unless @dbconfig.nil?
     begin
-      dbconf = YAML.load(File.open(File.expand_path('../../config/database.yml', __FILE__)))
+      dbconf = YAML.properly_load_file(File.open(File.expand_path('../../config/database.yml', __FILE__)))
       @dbconfig = dbconf[(ENV['WHOIS_ENV'] || 'development')]
     rescue NoMethodError => e
       logger.fatal "\n----> Please inspect config/database.yml for issues! Error: #{e}\n\n"
