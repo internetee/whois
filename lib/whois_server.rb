@@ -36,39 +36,66 @@ module WhoisServer
 
   def receive_data(data)
     connection
-    begin
-      ip = Socket.unpack_sockaddr_in(get_peername)
-    rescue StandardError::TypeError => e
-      logger.error("uncaught #{e} exception while handling connection: #{e.message}")
-      close_connection
-    end
+    ip = get_client_ip
+    return if ip.nil?
 
-    validator = UnicodeValidator.new(data)
-    invalid_data = !validator.valid?
+    name = sanitize_domain_name(data)
+    return if name.nil?
 
-    if invalid_data
-      logger.info "#{ip}: requested domain name is not in utf-8"
-      send_data(invalid_encoding_msg)
-      close_connection_after_writing
-      return
-    end
-
-    name = data.strip
-    name = name.downcase
-    name = SimpleIDN.to_unicode(name)
-    whois_record = WhoisRecord.find_by(name: name)
-
-    if whois_record
-      logger.info "#{ip}: requested: #{data} [searched by: #{name}; Record found with id: #{whois_record.try(:id)}]"
-      send_data whois_record.unix_body
-    else
-      logger.info "#{ip}: requested: #{data} [searched by: #{name}; No record found]"
-      provide_data_body(name)
-    end
+    process_whois_request(name, ip, data)
     close_connection_after_writing
   end
 
   private
+
+  def get_client_ip
+    Socket.unpack_sockaddr_in(get_peername)
+  rescue StandardError::TypeError => e
+    logger.error("uncaught #{e} exception while handling connection: #{e.message}")
+    close_connection
+    nil
+  end
+
+  def sanitize_domain_name(data)
+    validator = UnicodeValidator.new(data)
+    if !validator.valid?
+      logger.info "#{ip}: requested domain name is not in utf-8"
+      send_data(invalid_encoding_msg)
+      close_connection_after_writing
+      return nil
+    end
+
+    SimpleIDN.to_unicode(data.strip.downcase)
+  end
+
+  def process_whois_request(name, ip, original_data)
+    if special_ee_domain?(name)
+      handle_special_ee_domain(name, ip, original_data)
+    else
+      handle_regular_domain(name, ip, original_data)
+    end
+  end
+
+  def special_ee_domain?(name)
+    %w[pri.ee fie.ee med.ee com.ee].include?(name)
+  end
+
+  def handle_special_ee_domain(name, ip, original_data)
+    logger.info "#{ip}: requested: #{original_data} [searched by: #{name}; Special .ee second-level domain]"
+    send_data special_ee_domain_msg(name)
+  end
+
+  def handle_regular_domain(name, ip, original_data)
+    whois_record = WhoisRecord.find_by(name: name)
+
+    if whois_record
+      logger.info "#{ip}: requested: #{original_data} [searched by: #{name}; Record found with id: #{whois_record.try(:id)}]"
+      send_data whois_record.unix_body
+    else
+      logger.info "#{ip}: requested: #{original_data} [searched by: #{name}; No record found]"
+      provide_data_body(name)
+    end
+  end
 
   def provide_data_body(domain_name)
     return send_data(no_entries_msg) if domain_valid_format?(domain_name)
@@ -106,6 +133,20 @@ module WhoisServer
   def footer_msg
     "\n\nEstonia .ee Top Level Domain WHOIS server\n" \
     "More information at http://internet.ee\n"
+  end
+
+  def special_ee_domain_msg(domain)
+    <<~MSG
+      Estonia .ee Top Level Domain WHOIS server
+
+      Domain:
+      name:       #{domain}
+      status:     Blocked
+
+      Estonia .ee Top Level Domain WHOIS server
+      More information at http://internet.ee
+
+    MSG
   end
 end
 

@@ -107,4 +107,19 @@ class WhoisRecordTest < Minitest::Test
     assert !@whois_record.active?
   end
 
+  def test_special_ee_second_level_domains
+    special_domains = %w[pri.ee fie.ee med.ee com.ee]
+    special_domains.each do |domain|
+      @whois_record = WhoisRecord.new(name: domain, json: { name: domain, status: ['Blocked'] })
+
+      output = @whois_record.unix_body
+
+      assert_match(/Estonia .ee Top Level Domain WHOIS server/, output)
+      assert_match(/Domain:/, output)
+      assert_match(/name:\s+#{domain}/, output)
+      assert_match(/status:\s+Blocked/, output)
+      assert_match(/More information at http:\/\/internet\.ee/, output)
+    end
+  end
+
 end
