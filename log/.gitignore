@@ -1,3 +1,5 @@
 *
 */
 !.gitignore
+tmp/pids/
+.DS_Store

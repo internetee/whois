@@ -21,6 +21,6 @@ group :development do
 end
 
 group :development, :test do
-  gem 'minitest'
+  gem 'minitest', '~> 5.16.3'  # Обновлено до последней версии
   gem 'simplecov', '0.17.1', require: false # CC last supported v0.17
 end

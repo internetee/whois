@@ -53,17 +53,23 @@ module WhoisServer
       return
     end
 
-    name = data.strip
-    name = name.downcase
+    name = data.strip.downcase
     name = SimpleIDN.to_unicode(name)
-    whois_record = WhoisRecord.find_by(name: name)
-
-    if whois_record
-      logger.info "#{ip}: requested: #{data} [searched by: #{name}; Record found with id: #{whois_record.try(:id)}]"
-      send_data whois_record.unix_body
+    
+    # Add special handling for .ee second-level domains
+    if %w[pri.ee fie.ee med.ee com.ee].include?(name)
+      logger.info "#{ip}: requested: #{data} [searched by: #{name}; Special .ee second-level domain]"
+      send_data special_ee_domain_msg(name)
     else
-      logger.info "#{ip}: requested: #{data} [searched by: #{name}; No record found]"
-      provide_data_body(name)
+      whois_record = WhoisRecord.find_by(name: name)
+
+      if whois_record
+        logger.info "#{ip}: requested: #{data} [searched by: #{name}; Record found with id: #{whois_record.try(:id)}]"
+        send_data whois_record.unix_body
+      else
+        logger.info "#{ip}: requested: #{data} [searched by: #{name}; No record found]"
+        provide_data_body(name)
+      end
     end
     close_connection_after_writing
   end
@@ -106,6 +112,20 @@ module WhoisServer
   def footer_msg
     "\n\nEstonia .ee Top Level Domain WHOIS server\n" \
     "More information at http://internet.ee\n"
+  end
+
+  def special_ee_domain_msg(domain)
+    <<~MSG
+      Estonia .ee Top Level Domain WHOIS server
+
+      Domain:
+      name:       #{domain}
+      status:     Blocked
+
+      Estonia .ee Top Level Domain WHOIS server
+      More information at http://internet.ee
+
+    MSG
   end
 end
 
