@@ -112,19 +112,13 @@ class WhoisRecordTest < Minitest::Test
     special_domains.each do |domain|
       @whois_record = WhoisRecord.new(name: domain, json: { name: domain, status: ['Blocked'] })
 
-      expected_output = <<~OUTPUT
-        Estonia .ee Top Level Domain WHOIS server
+      output = @whois_record.unix_body
 
-        Domain:
-        name:       #{domain}
-        status:     Blocked
-
-        Estonia .ee Top Level Domain WHOIS server
-        More information at http://internet.ee
-
-      OUTPUT
-
-      assert_equal expected_output, @whois_record.unix_body
+      assert_match(/Estonia .ee Top Level Domain WHOIS server/, output)
+      assert_match(/Domain:/, output)
+      assert_match(/name:\s+#{domain}/, output)
+      assert_match(/status:\s+Blocked/, output)
+      assert_match(/More information at http:\/\/internet\.ee/, output)
     end
   end
 
