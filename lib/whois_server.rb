@@ -1,3 +1,4 @@
+require 'json'
 require 'bundler/setup'
 require 'eventmachine'
 require 'active_record'
@@ -13,7 +14,6 @@ module YAML
     YAML.load_file path
   end
 end
-
 
 module WhoisServer
   def logger
@@ -47,28 +47,52 @@ module WhoisServer
     invalid_data = !validator.valid?
 
     if invalid_data
-      logger.info "#{ip}: requested domain name is not in utf-8"
+      log_json(
+        ip: ip[1],
+        session_id: ip[0],
+        domain: data.strip,
+        status: 'invalid_encoding',
+        message: 'Requested domain name is not in UTF-8'
+      )
       send_data(invalid_encoding_msg)
       close_connection_after_writing
       return
     end
 
-    name = data.strip
-    name = name.downcase
+    cleaned_data = data.strip
+    name = cleaned_data.downcase
     name = SimpleIDN.to_unicode(name)
     whois_record = WhoisRecord.find_by(name: name)
 
     if whois_record
-      logger.info "#{ip}: requested: #{data} [searched by: #{name}; Record found with id: #{whois_record.try(:id)}]"
+      log_json(
+        ip: ip[1],
+        session_id: ip[0],
+        domain: cleaned_data,
+        searched_by: name,
+        record_found: true,
+        record_id: whois_record.id
+      )
       send_data whois_record.unix_body
     else
-      logger.info "#{ip}: requested: #{data} [searched by: #{name}; No record found]"
+      log_json(
+        ip: ip[1],
+        session_id: ip[0],
+        domain: cleaned_data,
+        searched_by: name,
+        record_found: false
+      )
       provide_data_body(name)
     end
+
     close_connection_after_writing
   end
 
   private
+
+  def log_json(payload)
+    logger.info(payload.to_json)
+  end
 
   def provide_data_body(domain_name)
     return send_data(no_entries_msg) if domain_valid_format?(domain_name)
@@ -99,8 +123,7 @@ module WhoisServer
   end
 
   def invalid_encoding_msg
-    "\nERROR: invalid encoding, please use utf-8" +
-    footer_msg
+    "\nERROR: invalid encoding, please use utf-8" + footer_msg
   end
 
   def footer_msg
