@@ -1,7 +1,7 @@
-require "active_record"
+require 'active_record'
 require 'yaml'
 require 'bundler/setup'
-require "rake/testtask"
+require 'rake/testtask'
 
 namespace :db do
   db_config = YAML::load(File.open('config/database.yml'))

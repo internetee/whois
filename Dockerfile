@@ -1,7 +1,10 @@
-FROM internetee/ruby:3.0.2
+FROM ruby:3.0.3-slim-buster
 
-RUN apt-get update -y > /dev/null
-RUN apt-get install whois -y > /dev/null
+RUN apt-get update && apt-get install -y \
+       build-essential \
+       libssl-dev \
+       libpq-dev \
+       whois
 RUN mkdir -p /opt/webapps/app/tmp/pids
 WORKDIR /opt/webapps/app
 COPY Gemfile Gemfile.lock ./

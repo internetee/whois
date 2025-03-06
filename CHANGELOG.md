@@ -1,3 +1,8 @@
+06.03.2025
+* Refactored `receive_data` method to reduce complexity by extracting logic into separate methods.
+* Separated logging functionality into a new `Logging` module for better code organization.
+* Changed logging format to JSON for better structured logging and improved log analysis
+
 22.12.2022
 * Disclose additional registrant data https://github.com/internetee/whois/pull/131
 * monkey yaml patching https://github.com/internetee/whois/pull/137
