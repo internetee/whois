@@ -85,6 +85,7 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  x86_64-linux
 
 DEPENDENCIES
   activerecord (~> 7.0)
