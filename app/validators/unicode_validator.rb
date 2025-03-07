@@ -14,18 +14,16 @@ class UnicodeValidator
     return false unless value
 
     string = prepare_string(value)
-
-    # Verify UTF-8 encoding
-    if string.force_encoding(UTF8_ENCODING).valid_encoding?
-      value.force_encoding(UTF8_ENCODING).valid_encoding?
-    else
-      false
-    end
+    valid_utf8_encoding?(string) && valid_utf8_encoding?(value)
   rescue ArgumentError
     false
   end
 
   private
+
+  def valid_utf8_encoding?(string)
+    string.force_encoding(UTF8_ENCODING).valid_encoding?
+  end
 
   def prepare_string(input)
     # Handle both escaped strings from whois command and direct byte sequences
