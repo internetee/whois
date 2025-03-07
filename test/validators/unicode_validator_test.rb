@@ -1,4 +1,4 @@
-require_relative '../test_helper'
+require 'test_helper'
 require_relative '../../app/validators/unicode_validator'
 
 class UnicodeValidatorTest < Minitest::Test

@@ -6,7 +6,7 @@ require 'eventmachine'
 require 'active_record'
 require 'yaml'
 
-load File.expand_path('../app/models/whois_record.rb', __dir__)
+require_relative '../app/models/whois_record'
 require_relative '../app/validators/unicode_validator'
 require_relative 'logging'
 
