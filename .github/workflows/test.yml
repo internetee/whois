@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-24.04]
-        ruby: [ '3.0.3', '3.4.2' ]
+        ruby: ['3.4.2' ]
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
     steps:
@@ -28,13 +28,6 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: Install Compatible Bundler
-      run: |
-        if [[ "${{ matrix.ruby }}" == "3.0.3" ]]; then
-          gem install bundler -v '<= 2.6.4'
-        else
-          gem install bundler
-        fi
 
     - name: Set ENV for codeclimate
       run: |
@@ -62,7 +55,7 @@ jobs:
         DISABLE_SPRING: 1
       run: |
         cp config/database-example.yml config/database.yml
-        bundle install --jobs 20 --retry 5
+        gem install bundler && bundle install --jobs 20 --retry 5
         bundle exec rake db:create
         bundle exec rake db:schema:load
         bundle exec rake test test/*
@@ -79,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [ '3.0.3', '3.4.2' ]
+        ruby: [ '3.4.2' ]
     runs-on: ubuntu-24.04
 
     env:
