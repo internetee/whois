@@ -55,6 +55,7 @@ jobs:
         DISABLE_SPRING: 1
       run: |
         cp config/database-example.yml config/database.yml
+        gem update --system
         gem install bundler && bundle install --jobs 20 --retry 5
         bundle exec rake db:create
         bundle exec rake db:schema:load
