@@ -5,7 +5,7 @@ require 'bundler/setup'
 require 'eventmachine'
 require 'active_record'
 require 'yaml'
-require 'syslog/logger'
+
 load File.expand_path('../app/models/whois_record.rb', __dir__)
 require_relative '../app/validators/unicode_validator'
 require_relative 'logging'
@@ -23,6 +23,9 @@ end
 # validating domain names, and querying the database for WHOIS records.
 module WhoisServer
   include Logging
+
+  DOMAIN_NAME_REGEXP = /\A[a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{2,61}\.
+    ([a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{2,61}\.)?[a-z0-9]{1,61}\z/x.freeze
 
   def dbconfig
     return @dbconfig unless @dbconfig.nil?
@@ -65,9 +68,11 @@ module WhoisServer
   end
 
   def invalid_data?(data, ip)
+    return true unless data.present?
+
     validator = UnicodeValidator.new(data)
     if !validator.valid?
-      log_invalid_data(ip, data)
+      log_invalid_encoding(ip, data)
       true
     else
       false
@@ -77,6 +82,16 @@ module WhoisServer
   def process_whois_request(data, ip)
     cleaned_data = data.strip
     name = SimpleIDN.to_unicode(cleaned_data.downcase)
+    unless domain_valid_format?(name)
+      log_policy_error(ip, cleaned_data, name)
+      send_data(policy_error_msg)
+      return
+    end
+
+    handle_whois_record(name, ip, cleaned_data)
+  end
+
+  def handle_whois_record(name, ip, cleaned_data)
     whois_record = WhoisRecord.find_by(name: name)
 
     if whois_record
@@ -84,22 +99,13 @@ module WhoisServer
       send_data whois_record.unix_body
     else
       log_record_not_found(ip, cleaned_data, name)
-      provide_data_body(name)
+      send_data(no_entries_msg)
     end
   end
 
-  def provide_data_body(domain_name)
-    return send_data(no_entries_msg) if domain_valid_format?(domain_name)
-
-    send_data(policy_error_msg)
-  end
-
   def domain_valid_format?(domain_name)
-    domain_name_regexp = /\A[a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{2,61}\.
-    ([a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{2,61}\.)?[a-z0-9]{1,61}\z/x
-
     formatted_domain_name = domain_name.strip.downcase
-    (formatted_domain_name =~ domain_name_regexp) != nil
+    (formatted_domain_name =~ DOMAIN_NAME_REGEXP) != nil
   end
 
   def policy_error_msg

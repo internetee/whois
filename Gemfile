@@ -1,14 +1,16 @@
 source 'https://rubygems.org'
 
+ruby '3.4.2'
+
 # core
 gem 'eventmachine', '~> 1.2.7'
 gem 'simpleidn', '~> 0.2.1' # For punycode
 
 # database
 gem 'activerecord', '~> 7.0'
-gem 'pg',           '~> 1.5.0'
 gem 'daemons', '~> 1.4.1'
 gem 'dotenv'
+gem 'pg', '~> 1.5.0'
 
 group :development do
   gem 'rubocop'

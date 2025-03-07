@@ -1,6 +1,4 @@
-gem "minitest"
 require 'minitest/autorun'
-
 require 'active_record'
 require 'yaml'
 
@@ -18,8 +16,9 @@ end
 class Minitest::Test
   def dbconfig
     return @dbconfig unless @dbconfig.nil?
+
     begin
-      dbconf = YAML.load(File.open(File.expand_path('../../config/database.yml', __FILE__)))
+      dbconf = YAML.load_file(File.open(File.expand_path('../config/database.yml', __dir__)), aliases: true)
       @dbconfig = dbconf[(ENV['WHOIS_ENV'])]
     rescue NoMethodError => e
       logger.fatal "\n----> Please inspect config/database.yml for issues! Error: #{e}\n\n"
