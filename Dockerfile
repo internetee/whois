@@ -70,8 +70,8 @@ USER whois
 EXPOSE 43
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s \
-  CMD nc -zv localhost 43 || exit 1
+# HEALTHCHECK --interval=30s --timeout=3s \
+#   CMD nc -zv localhost 43 || exit 1
 
 # Start the WHOIS server
 CMD ["bundle", "exec", "ruby", "whois.rb"]
