@@ -17,8 +17,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04]
-        ruby: [ '3.0.3'  ]
+        os: [ubuntu-24.04]
+        ruby: ['3.4.2' ]
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
     steps:
@@ -61,9 +61,9 @@ jobs:
         bundle exec rake test test/*
 
     - name: Save coverage
-      run: ./cc-test-reporter format-coverage --output coverage/codeclimate.${{ matrix.ruby }}.json
+      run: ./cc-test-reporter format-coverage --input-type simplecov --output coverage/codeclimate.${{ matrix.ruby }}.json
 
-    - uses: actions/upload-artifact@v4.6.0
+    - uses: actions/upload-artifact@v4.6.1
       with:
         name: coverage-${{ matrix.ruby }}
         path: coverage/codeclimate.${{ matrix.ruby }}.json
@@ -72,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [ '3.0.3' ]
+        ruby: [ '3.4.2' ]
     runs-on: ubuntu-24.04
 
     env:
@@ -89,7 +89,7 @@ jobs:
       - name: Give test coverage reporter executable permissions
         run: chmod +x cc-test-reporter
 
-      - uses: actions/download-artifact@v4.1.8
+      - uses: actions/download-artifact@v4.1.9
         with:
           name: coverage-${{ matrix.ruby }}
           path: coverage

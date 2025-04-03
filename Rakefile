@@ -1,10 +1,10 @@
-require "active_record"
-require 'yaml'
 require 'bundler/setup'
-require "rake/testtask"
+require 'active_record'
+require 'yaml'
+require 'rake/testtask'
 
 namespace :db do
-  db_config = YAML::load(File.open('config/database.yml'))
+  db_config = YAML.load_file(File.open('config/database.yml'), aliases: true)
   db = db_config[(ENV['RAILS_ENV'] || 'development')].merge({ schema_search_path: 'public' })
 
   desc "Create the database"
@@ -54,8 +54,9 @@ namespace :db do
   end
 end
 
-Rake::TestTask.new do |t|
-  t.name = "test"
-  t.warning = false
-  t.test_files = FileList["test/**/*test.rb"]
+Rake::TestTask.new(:test) do |t|
+  t.libs << 'test'
+  t.pattern = 'test/**/*_test.rb'
 end
+
+task default: :test

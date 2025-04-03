@@ -32,6 +32,41 @@ If you have any issues you can try run whois server on front:
     ruby whois.rb run    # runs whois server in terminal for debug
     ruby whois.rb --help # for other commands
 
+Docker Installation
+------------------
+
+To run the WHOIS server using Docker:
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/internetee/whois.git
+   cd whois
+   ```
+
+2. Configure the application:
+   ```
+   cp config/database-example.yml config/database.yml
+   cp env-example .env
+   ```
+   Edit these files according to your environment.
+
+3. Build the Docker image:
+   ```
+   docker build -t whois-server .
+   ```
+
+4. Run the container:
+   ```
+   docker run -d -p 43:43 --name whois-server \
+     --env-file .env \
+     -v $(pwd)/config/database.yml:/opt/webapps/app/config/database.yml \
+     whois-server
+   ```
+
+5. Test the WHOIS server:
+   ```
+   whois hello.ee -h localhost -p 43
+   ```
 
 Production installation
 -----------------------

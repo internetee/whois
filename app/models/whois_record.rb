@@ -10,15 +10,15 @@ class WhoisRecord < ActiveRecord::Base
   DISPUTED = 'Disputed'.freeze
 
   TEMPLATE_DIR = File.join(File.dirname(__FILE__), '../views/whois_record/').freeze
-  TEMPLATE_INACTIVE = (TEMPLATE_DIR + "inactive.erb").freeze
-  LEGAL_PERSON_TEMPLATE = (TEMPLATE_DIR + "legal_person.erb").freeze
-  PRIVATE_PERSON_TEMPLATE = (TEMPLATE_DIR + "private_person.erb").freeze
+  TEMPLATE_INACTIVE = "#{TEMPLATE_DIR}inactive.erb".freeze
+  LEGAL_PERSON_TEMPLATE = "#{TEMPLATE_DIR}legal_person.erb".freeze
+  PRIVATE_PERSON_TEMPLATE = "#{TEMPLATE_DIR}private_person.erb".freeze
 
   INACTIVE_STATUSES = [BLOCKED, DISCARDED, AT_AUCTION, PENDING_REGISTRATION].freeze
 
   def unix_body
     file = File.new(template)
-    ERB.new(file.read, trim_mode: "-").result(binding)
+    ERB.new(file.read, trim_mode: '-').result(binding)
   end
 
   def template
