@@ -43,7 +43,7 @@ RUN mkdir -p /opt/webapps/app/tmp/pids /opt/webapps/app/log \
 WORKDIR /opt/webapps/app
 
 # Copy Gemfile for dependency installation
-COPY --chown=whois:whois Gemfile ./
+COPY --chown=whois:whois Gemfile Gemfile.lock ./
 
 # Install dependencies and create Gemfile.lock
 RUN gem update --system && \
@@ -70,8 +70,8 @@ USER whois
 EXPOSE 43
 
 # Health check
-# HEALTHCHECK --interval=30s --timeout=3s \
-#   CMD nc -zv localhost 43 || exit 1
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD nc -zv localhost 43 || exit 1
 
 # Start the WHOIS server
-CMD ["bundle", "exec", "ruby", "whois.rb"]
+CMD ["bundle", "exec", "ruby", "whois.rb", "run"]

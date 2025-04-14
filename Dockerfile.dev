@@ -57,4 +57,4 @@ HEALTHCHECK --interval=30s --timeout=3s \
   CMD nc -zv localhost 43 || exit 1
 
 # Start the WHOIS server with development settings
-CMD ["bundle", "exec", "ruby", "whois.rb"] 
+CMD ["bundle", "exec", "ruby", "whois.rb", "start"]
