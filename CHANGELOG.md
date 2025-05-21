@@ -1,3 +1,6 @@
+21.05.2025
+* Dockerfiles update https://github.com/internetee/whois/pull/170
+
 06.03.2025
 * Refactored `receive_data` method to reduce complexity by extracting logic into separate methods.
 * Separated logging functionality into a new `Logging` module for better code organization.
