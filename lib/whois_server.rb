@@ -131,7 +131,9 @@ module WhoisServer
   end
 end
 
-EventMachine.run do
-  EventMachine.start_server ENV['HOST'] || '0.0.0.0', ENV['PORT'] || '43', WhoisServer
-  EventMachine.set_effective_user ENV['WHOIS_USER'] || `whoami`.strip
+if $PROGRAM_NAME == __FILE__
+  EventMachine.run do
+    EventMachine.start_server ENV['HOST'] || '0.0.0.0', ENV['PORT'] || '43', WhoisServer
+    EventMachine.set_effective_user ENV['WHOIS_USER'] || `whoami`.strip
+  end
 end
