@@ -1,10 +1,10 @@
 default: &default
-  host: localhost
+  host: db
   adapter: postgresql
   encoding: unicode
-  pool: 5
   username: postgres
-  password: password
+  password: 
+  pool: 5
 
 development:
   <<: *default
