@@ -1,3 +1,6 @@
+21.07.2025
+* Enable searching 1-letter domains https://github.com/internetee/whois/pull/173
+
 21.05.2025
 * Dockerfiles update https://github.com/internetee/whois/pull/170
 
