@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: bundle install
       - name: Run Snyk
-        uses: snyk/actions@vmaster
+        uses: snyk/actions@master
         with:
           command: test
         env:
