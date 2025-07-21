@@ -14,7 +14,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1' # või sinu Ruby versioon
+          ruby-version: '3.4.2'
       - name: Install dependencies
         run: bundle install
       - name: Run Snyk
