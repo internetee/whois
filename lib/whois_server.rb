@@ -9,6 +9,7 @@ require 'yaml'
 require_relative '../app/models/whois_record'
 require_relative '../app/validators/unicode_validator'
 require_relative 'logging'
+require_relative 'whois_server_core'
 
 # This module extends the YAML module to properly load files with aliases.
 module YAML
@@ -24,8 +25,7 @@ end
 module WhoisServer
   include Logging
 
-  DOMAIN_NAME_REGEXP = /\A[a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{1,61}\.
-    ([a-z0-9\-\u00E4\u00F5\u00F6\u00FC\u0161\u017E]{1,61}\.)?[a-z0-9]{1,61}\z/x.freeze
+  DOMAIN_NAME_REGEXP = WhoisServerCore::DOMAIN_NAME_REGEXP
 
   def dbconfig
     return @dbconfig unless @dbconfig.nil?
@@ -131,9 +131,7 @@ module WhoisServer
   end
 end
 
-if $PROGRAM_NAME == __FILE__
-  EventMachine.run do
-    EventMachine.start_server ENV['HOST'] || '0.0.0.0', ENV['PORT'] || '43', WhoisServer
-    EventMachine.set_effective_user ENV['WHOIS_USER'] || `whoami`.strip
-  end
+EventMachine.run do
+  EventMachine.start_server ENV['HOST'] || '0.0.0.0', ENV['PORT'] || '43', WhoisServer
+  EventMachine.set_effective_user ENV['WHOIS_USER'] || `whoami`.strip
 end
