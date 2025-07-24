@@ -1,3 +1,6 @@
+24.07.2025
+* Refactor domain name validation https://github.com/internetee/whois/pull/179
+
 21.07.2025
 * Enable searching 1-letter domains https://github.com/internetee/whois/pull/173
 
