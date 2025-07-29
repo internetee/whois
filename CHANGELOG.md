@@ -1,3 +1,6 @@
+29.07.2025
+* Replace codeclimate with qlty tool https://github.com/internetee/whois/pull/175
+
 24.07.2025
 * Refactor domain name validation https://github.com/internetee/whois/pull/179
 
