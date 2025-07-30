@@ -13,7 +13,7 @@ gem 'dotenv'
 gem 'pg', '~> 1.5.0'
 
 group :development do
-  gem 'rubocop'
+  gem 'rubocop', '>= 1.74.0'
 
   # debug
   gem 'pry', '~> 0.15.0'
