@@ -1,4 +1,4 @@
-FROM ruby:3.4.2-bullseye
+FROM ruby:3.4.5-bullseye
 
 LABEL org.opencontainers.image.source=https://github.com/internetee/whois
 LABEL org.opencontainers.image.description="WHOIS server for .ee domains (Development)"
