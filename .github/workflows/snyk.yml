@@ -10,7 +10,7 @@ jobs:
   snyk:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -18,8 +18,16 @@ jobs:
       - name: Install dependencies
         run: bundle install
       - name: Run Snyk
-        uses: snyk/actions@master
+        uses: snyk/actions@2
         with:
           command: test
+          json: false
+          args: "--dev=false"
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Run Snyk monitor
+        uses: snyk/actions@v2
+        with:
+          command: monitor
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
