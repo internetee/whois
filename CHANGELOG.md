@@ -1,7 +1,6 @@
 25.09.2025
 *  [Snyk] Security upgrade activerecord from 7.2.2.1 to 7.2.2.2 https://github.com/internetee/whois/pull/186
 *  Update actions/checkout action to v5 https://github.com/internetee/whois/pull/184
-*  Update dependency activerecord to v7.2.2.2 [SECURITY] https://github.com/internetee/whois/pull/183
 *  Update qltysh/qlty-action action to v2 https://github.com/internetee/whois/pull/182
 *  Update dependency ruby to v3.4.4 https://github.com/internetee/whois/pull/171
 
