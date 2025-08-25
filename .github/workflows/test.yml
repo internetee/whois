@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-24.04]
-        ruby: ['3.4.2']
+        ruby: ['3.4.4']
     runs-on: ${{ matrix.os }}
     env:
       PG_DATABASE: postgres
