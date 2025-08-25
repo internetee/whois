@@ -53,7 +53,7 @@ jobs:
       - name: Run tests with coverage
         run: bundle exec rake test test/*
 
-      - uses: qltysh/qlty-action/coverage@v1
+      - uses: qltysh/qlty-action/coverage@v2
         with:
           oidc: true
           files: coverage/.resultset.json
