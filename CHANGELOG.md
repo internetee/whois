@@ -1,4 +1,7 @@
-25.09.2025
+28.08.2025
+* [Snyk] Security upgrade ruby from 3.4.2-bullseye to 3.4.5-bullseye https://github.com/internetee/whois/pull/176
+
+25.08.2025
 *  [Snyk] Security upgrade activerecord from 7.2.2.1 to 7.2.2.2 https://github.com/internetee/whois/pull/186
 *  Update actions/checkout action to v5 https://github.com/internetee/whois/pull/184
 *  Update qltysh/qlty-action action to v2 https://github.com/internetee/whois/pull/182
