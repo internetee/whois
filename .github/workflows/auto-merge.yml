@@ -11,7 +11,7 @@ permissions:
 jobs:
   auto-merge-patch:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'internetee/registry'
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'internetee/whois'
     steps:
       - name: Checkout
         uses: actions/checkout@v5
