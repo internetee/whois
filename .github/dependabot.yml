@@ -8,7 +8,6 @@ updates:
       time: "09:00"
     allow:
       - dependency-type: "direct"
-        update-type: "version-update:semver-patch"
     open-pull-requests-limit: 10
     reviewers:
       - "internetee"
