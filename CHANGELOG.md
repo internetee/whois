@@ -1,3 +1,6 @@
+19.09.2025
+* Automated pull request merging https://github.com/internetee/whois/pull/189
+
 28.08.2025
 * [Snyk] Security upgrade ruby from 3.4.2-bullseye to 3.4.5-bullseye https://github.com/internetee/whois/pull/176
 
