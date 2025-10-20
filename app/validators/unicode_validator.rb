@@ -22,7 +22,7 @@ class UnicodeValidator
   private
 
   def valid_utf8_encoding?(string)
-    string.force_encoding(UTF8_ENCODING).valid_encoding?
+    string.dup.force_encoding(UTF8_ENCODING).valid_encoding?
   end
 
   def prepare_string(input)

@@ -45,6 +45,8 @@ WORKDIR /opt/webapps/app
 # Copy Gemfile for dependency installation
 COPY --chown=whois:whois Gemfile Gemfile.lock ./
 
+ENV BUNDLE_FROZEN=false
+
 # Install dependencies and create Gemfile.lock
 RUN gem update --system && \
     gem install bundler && \
