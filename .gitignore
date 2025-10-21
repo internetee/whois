@@ -32,3 +32,4 @@ config/deploy.rb
 .DS_Store
 app/.DS_Store
 test/.DS_Store
+.bash_history
