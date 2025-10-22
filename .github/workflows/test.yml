@@ -55,6 +55,7 @@ jobs:
         run: bundle exec rake test test/*
 
       - uses: qltysh/qlty-action/coverage@v2
+        if: github.event_name == 'push'
         with:
           oidc: true
           files: coverage/.resultset.json
@@ -62,4 +63,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage/
+          path: |
+            coverage/.resultset.json
+            coverage/index.html
+            coverage/assets/
+          include-hidden-files: true

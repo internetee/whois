@@ -1,3 +1,6 @@
+[![Maintainability](https://qlty.sh/gh/internetee/projects/whois/maintainability.svg)](https://qlty.sh/gh/internetee/projects/whois)
+[![Code Coverage](https://qlty.sh/gh/internetee/projects/whois/coverage.svg)](https://qlty.sh/gh/internetee/projects/whois)
+
 Whois server
 ------------
 
