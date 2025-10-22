@@ -81,7 +81,15 @@ module WhoisServer
 
   def process_whois_request(data, ip)
     cleaned_data = data.strip
-    name = SimpleIDN.to_unicode(cleaned_data.downcase)
+    utf8_data = cleaned_data.force_encoding('UTF-8')
+
+    unless utf8_data.valid_encoding?
+      log_invalid_encoding(ip, data)
+      send_data(invalid_encoding_msg)
+      return
+    end
+
+    name = SimpleIDN.to_unicode(utf8_data.downcase)
     unless domain_valid_format?(name)
       log_policy_error(ip, cleaned_data, name)
       send_data(policy_error_msg)
