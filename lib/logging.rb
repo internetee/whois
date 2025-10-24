@@ -12,10 +12,27 @@ module Logging
 
   def log_json(payload)
     base_log = build_base_log(payload)
-    logger.info(base_log.to_json)
+    safe_log = sanitize_for_json(base_log)
+    logger.info(safe_log.to_json)
+  rescue JSON::GeneratorError, Encoding::UndefinedConversionError => e
+    logger.error("[ERROR] JSON serialization failed: #{e.class} - #{e.message}")
+    logger.error("[CONTEXT] Original payload: #{payload.inspect}")
   end
 
   private
+
+  def sanitize_for_json(value)
+    case value
+    when String
+      value.dup.encode('UTF-8', invalid: :replace, undef: :replace, replace: '�').scrub('�')
+    when Array
+      value.map { |item| sanitize_for_json(item) }
+    when Hash
+      value.transform_values { |item| sanitize_for_json(item) }
+    else
+      value
+    end
+  end
 
   # rubocop:disable Metrics/MethodLength
   def build_base_log(payload)
