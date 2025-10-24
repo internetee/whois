@@ -1,3 +1,6 @@
+24.10.2025
+* Fixed JSON serialization crash on invalid UTF-8 input https://github.com/internetee/whois/pull/202
+
 19.09.2025
 * Automated pull request merging https://github.com/internetee/whois/pull/189
 
