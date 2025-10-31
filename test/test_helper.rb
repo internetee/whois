@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start 'rails'
+
 require 'minitest/autorun'
 require 'mocha/minitest'
 require 'active_record'
@@ -5,8 +8,6 @@ require 'yaml'
 
 ENV['WHOIS_ENV'] ||= 'test'
 
-require 'simplecov'
-SimpleCov.start 'rails'
 
 class Minitest::Test
   def dbconfig
