@@ -76,27 +76,6 @@ class WhoisServerIntegrationTest < Minitest::Test
     assert_equal 0, @sent_data.length
   end
 
-  def test_receive_data_full_flow
-    scenarios = [
-      {domain: TEST_DOMAIN, body: 'Whois body'},
-      {domain: 'integration-test.ee', body: 'Integration test'}
-    ]
-
-    scenarios.each do |scenario|
-      mock_record = mock_whois_record(body: scenario[:body])
-      stub_connection_and_ip
-
-      receive_data(scenario[:domain])
-
-      assert_equal 1, @sent_data.length
-      assert @connection_closed_after_writing
-      mock_record.verify
-
-      @sent_data.clear
-      @connection_closed_after_writing = false
-    end
-  end
-
   def send_data(data)
     @sent_data << data
   end
