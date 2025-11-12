@@ -56,7 +56,10 @@ class WhoisServerIntegrationTest < Minitest::Test
     mock_record.verify
   end
 
-  def test_receive_data_accepts_valid_data
+  def test_receive_data_domain_not_found
+    stub_connection_and_ip
+    WhoisRecord.stubs(:find_by).returns(nil)
+
     receive_data(TEST_DOMAIN)
 
     assert_equal 1, @sent_data.length
@@ -114,4 +117,3 @@ class WhoisServerIntegrationTest < Minitest::Test
     @logger
   end
 end
-
