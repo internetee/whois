@@ -5,6 +5,9 @@ require_relative '../../lib/whois_server_core'
 require_relative '../../app/models/whois_record'
 require_relative '../../app/validators/unicode_validator'
 
+TEST_DOMAIN = 'test-domain.ee'
+INTEGRATION_TEST_DOMAIN = 'integration-test.ee'
+
 class WhoisServerIntegrationTest < Minitest::Test
   include WhoisServer
 
@@ -44,7 +47,7 @@ class WhoisServerIntegrationTest < Minitest::Test
     stub_connection_and_ip
     mock_record = mock_whois_record(body: 'This is a valid WHOIS record')
   
-    receive_data('example.ee')
+    receive_data(TEST_DOMAIN)
   
     assert_equal 1, @sent_data.length
     assert_includes @sent_data.first, 'This is a valid WHOIS record'
@@ -54,7 +57,7 @@ class WhoisServerIntegrationTest < Minitest::Test
   end
 
   def test_receive_data_accepts_valid_data
-    receive_data('example.ee')
+    receive_data(TEST_DOMAIN)
 
     assert_equal 1, @sent_data.length
     assert_includes @sent_data.first.downcase, 'domain not found'
@@ -65,14 +68,14 @@ class WhoisServerIntegrationTest < Minitest::Test
     stubs(:extract_ip).returns(nil)
     stubs(:connection).returns(nil)
 
-    receive_data('example.ee')
+    receive_data(TEST_DOMAIN)
 
     assert_equal 0, @sent_data.length
   end
 
   def test_receive_data_full_flow
     scenarios = [
-      {domain: 'example.ee', body: 'Whois body'},
+      {domain: TEST_DOMAIN, body: 'Whois body'},
       {domain: 'integration-test.ee', body: 'Integration test'}
     ]
 
