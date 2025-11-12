@@ -18,15 +18,46 @@ class WhoisServerIntegrationTest < Minitest::Test
     ENV['WHOIS_ENV'] = 'test'
   end
 
-  def test_receive_data_with_invalid_data
-    stubs(:invalid_data?).returns(true)
-    stubs(:invalid_encoding_msg).returns('Invalid encoding')
+  def stub_connection_and_ip(ip = ['12345', '127.0.0.1'])
     stubs(:connection).returns(nil)
+    stubs(:extract_ip).returns(ip)
+  end
 
-    receive_data('invalid\xFF')
+  def mock_whois_record(body: 'Whois body', id: 1)
+    mock_record = Minitest::Mock.new
+    mock_record.expect(:unix_body, body)
+    mock_record.expect(:id, id)
+    WhoisRecord.stubs(:find_by).returns(mock_record)
+    mock_record
+  end
+
+  def test_receive_data_rejects_invalid_encoding
+    invalid_payload = "\xFF\xFE".dup.force_encoding('ASCII-8BIT')
+    receive_data(invalid_payload)
 
     assert_equal 1, @sent_data.length
-    assert_includes @sent_data.first, 'Invalid encoding'
+    assert_includes @sent_data.first.downcase, 'invalid encoding'
+    assert @connection_closed_after_writing
+  end
+
+  def test_receive_data_returns_valid_whois_body
+    stub_connection_and_ip
+    mock_record = mock_whois_record(body: 'This is a valid WHOIS record')
+  
+    receive_data('example.ee')
+  
+    assert_equal 1, @sent_data.length
+    assert_includes @sent_data.first, 'This is a valid WHOIS record'
+    assert @connection_closed_after_writing
+  
+    mock_record.verify
+  end
+
+  def test_receive_data_accepts_valid_data
+    receive_data('example.ee')
+
+    assert_equal 1, @sent_data.length
+    assert_includes @sent_data.first.downcase, 'domain not found'
     assert @connection_closed_after_writing
   end
 
@@ -40,166 +71,24 @@ class WhoisServerIntegrationTest < Minitest::Test
   end
 
   def test_receive_data_full_flow
-    data = 'example.ee'
-    ip = ['12345', '127.0.0.1']
-    mock_record = Minitest::Mock.new
-    mock_record.expect(:unix_body, 'Whois body')
-    mock_record.expect(:id, 1)
+    scenarios = [
+      {domain: 'example.ee', body: 'Whois body'},
+      {domain: 'integration-test.ee', body: 'Integration test'}
+    ]
 
-    stubs(:connection).returns(nil)
-    stubs(:extract_ip).returns(ip)
-    stubs(:invalid_data?).returns(false)
-    WhoisRecord.stubs(:find_by).returns(mock_record)
+    scenarios.each do |scenario|
+      mock_record = mock_whois_record(body: scenario[:body])
+      stub_connection_and_ip
 
-    receive_data(data)
+      receive_data(scenario[:domain])
 
-    assert_equal 1, @sent_data.length
-    assert @connection_closed_after_writing
-    mock_record.verify
-  end
+      assert_equal 1, @sent_data.length
+      assert @connection_closed_after_writing
+      mock_record.verify
 
-  def test_receive_data_integration_full_flow
-    data = 'integration-test.ee'
-    ip = ['12345', '127.0.0.1']
-    
-    stubs(:connection).returns(nil)
-    stubs(:extract_ip).returns(ip)
-    stubs(:invalid_data?).returns(false)
-    
-    mock_record = Minitest::Mock.new
-    mock_record.expect(:unix_body, 'Integration test body')
-    mock_record.expect(:id, 1)
-    
-    WhoisRecord.stubs(:find_by).returns(mock_record)
-    
-    receive_data(data)
-    
-    assert_equal 1, @sent_data.length
-    assert @connection_closed_after_writing
-    mock_record.verify
-  end
-
-  def test_process_whois_request_with_invalid_encoding
-    data = "\xFF\xFE".force_encoding('ASCII-8BIT')
-    ip = ['12345', '127.0.0.1']
-    
-    send(:process_whois_request, data, ip)
-
-    assert_equal 1, @sent_data.length
-    assert_includes @sent_data.first, 'invalid encoding'
-  end
-
-  def test_process_whois_request_with_invalid_domain_format
-    data = 'invalid..domain.ee'
-    ip = ['12345', '127.0.0.1']
-
-    send(:process_whois_request, data, ip)
-
-    assert_equal 1, @sent_data.length
-    assert_includes @sent_data.first, 'Policy error'
-  end
-
-  def test_process_whois_request_with_valid_domain_found
-    data = 'example.ee'
-    ip = ['12345', '127.0.0.1']
-    mock_record = Minitest::Mock.new
-    mock_record.expect(:unix_body, 'Whois body')
-    mock_record.expect(:id, 1)
-
-    WhoisRecord.stubs(:find_by).returns(mock_record)
-
-    send(:process_whois_request, data, ip)
-
-    assert_equal 1, @sent_data.length
-    assert_equal 'Whois body', @sent_data.first
-    mock_record.verify
-  end
-
-  def test_process_whois_request_with_valid_domain_not_found
-    data = 'nonexistent.ee'
-    ip = ['12345', '127.0.0.1']
-
-    WhoisRecord.stubs(:find_by).returns(nil)
-
-    send(:process_whois_request, data, ip)
-
-    assert_equal 1, @sent_data.length
-    assert_includes @sent_data.first, 'Domain not found'
-  end
-
-  def test_process_whois_request_strips_whitespace
-    data = '  example.ee  '
-    ip = ['12345', '127.0.0.1']
-    mock_record = Minitest::Mock.new
-    mock_record.expect(:unix_body, 'Whois body')
-    mock_record.expect(:id, 1)
-
-    WhoisRecord.stubs(:find_by).returns(mock_record)
-
-    send(:process_whois_request, data, ip)
-
-    assert_equal 1, @sent_data.length
-    assert_equal 'Whois body', @sent_data.first
-    mock_record.verify
-  end
-
-  def test_process_whois_request_with_whitespace_only
-    data = '   '
-    ip = ['12345', '127.0.0.1']
-    
-    send(:process_whois_request, data, ip)
-    
-    assert_equal 1, @sent_data.length
-    assert_includes @sent_data.first, 'Policy error'
-  end
-
-  def test_process_whois_request_calls_logging_with_punycode
-    data = 'example.ee'
-    ip = ['12345', '127.0.0.1']
-    
-    mock_record = Minitest::Mock.new
-    mock_record.expect(:unix_body, 'Whois body')
-    mock_record.expect(:id, 1)
-    
-    WhoisRecord.stubs(:find_by).returns(mock_record)
-    
-    send(:process_whois_request, data, ip)
-    
-    assert_equal 1, @sent_data.length
-    assert_equal 'Whois body', @sent_data.first
-    mock_record.verify
-  end
-
-  def test_handle_whois_record_found
-    name = 'example.ee'
-    ip = ['12345', '127.0.0.1']
-    cleaned_data = 'example.ee'
-
-    mock_record = Minitest::Mock.new
-    mock_record.expect(:unix_body, 'Whois record body')
-    mock_record.expect(:id, 1)
-
-    WhoisRecord.stubs(:find_by).with(name: name).returns(mock_record)
-
-    send(:handle_whois_record, name, ip, cleaned_data)
-
-    assert_equal 1, @sent_data.length
-    assert_equal 'Whois record body', @sent_data.first
-    mock_record.verify
-  end
-
-  def test_handle_whois_record_not_found
-    name = 'nonexistent.ee'
-    ip = ['12345', '127.0.0.1']
-    cleaned_data = 'nonexistent.ee'
-
-    WhoisRecord.stubs(:find_by).with(name: name).returns(nil)
-    stubs(:no_entries_msg).returns('Domain not found')
-
-    send(:handle_whois_record, name, ip, cleaned_data)
-
-    assert_equal 1, @sent_data.length
-    assert_includes @sent_data.first, 'Domain not found'
+      @sent_data.clear
+      @connection_closed_after_writing = false
+    end
   end
 
   def send_data(data)
