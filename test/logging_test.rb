@@ -9,9 +9,17 @@ class LoggingTest < Minitest::Test
 
   def setup
     @output = StringIO.new
-    @logger = Logger.new(@output)
-    @logger.formatter = proc do |severity, datetime, progname, msg|
-      "[#{progname}] #{msg}\n"
+    @logger = nil
+  end
+
+  def logger
+    @logger ||= begin
+      original_logger = super
+      io_logger = Logger.new(@output, progname: 'whois')
+      io_logger.formatter = proc do |severity, datetime, progname, msg|
+        "[#{progname}] #{msg}\n"
+      end
+      @logger = io_logger
     end
   end
 
@@ -73,5 +81,5 @@ class LoggingTest < Minitest::Test
 
     assert_includes log_output, '"status":"not_found"'
     assert_includes log_output, '"record_found":false'
-  end
+  end  
 end
