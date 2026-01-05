@@ -15,7 +15,7 @@ jobs:
     if: (github.actor == 'dependabot[bot]' || github.actor == 'renovate[bot]') && github.repository == 'internetee/whois'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install GitHub CLI
         run: |
