@@ -34,3 +34,5 @@ app/.DS_Store
 test/.DS_Store
 .bash_history
 .claude
+
+Dockerfile.dev.v2
