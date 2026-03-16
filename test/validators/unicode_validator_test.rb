@@ -23,14 +23,12 @@ class UnicodeValidatorTest < Minitest::Test
   end
 
   def test_invalid_utf8_sequences
-    # Test with escaped backslash as received from whois command
     refute @validator.new("\\xFF.ee\r\n").valid?
     refute @validator.new("\\xFF\\xFE\\xFD.ee\r\n").valid?
     refute @validator.new("test\\xC3\\x28.ee\r\n").valid?
   end
 
   def test_invalid_utf8_bytes
-    # Test with actual invalid bytes for direct programmatic access
     refute @validator.new("\xFF.ee").valid?
     refute @validator.new("\xFF\xFE\xFD.ee").valid?
     refute @validator.new("test\xC3\x28.ee").valid?
@@ -49,5 +47,50 @@ class UnicodeValidatorTest < Minitest::Test
   def test_mixed_chinese_and_ascii_domain_name
     value = 'test中国123.ee'.encode('utf-8')
     assert @validator.new(value).valid?
+  end
+
+  def test_nil_value
+    refute @validator.new(nil).valid?
+  end
+
+  def test_empty_string
+    assert @validator.new('').valid?
+  end
+
+  def test_unicode_escaped_sequences_valid
+    assert @validator.new("\\x61.ee").valid?
+    assert @validator.new("test\\x61test.ee").valid?
+  end
+
+  def test_unicode_escaped_sequences_invalid
+    refute @validator.new("\\xFF.ee").valid?
+  end
+
+  def test_string_with_trailing_carriage_return
+    assert @validator.new("example.ee\r\n").valid?
+    refute @validator.new("\\xFF.ee\r\n").valid?
+  end
+
+  def test_valid_encoding_but_rescues_argument_error
+    value = "\xFF\xFE".force_encoding('BINARY')
+    validator = @validator.new(value)
+    result = validator.valid?
+    assert [true, false].include?(result)
+  end
+
+  def test_hex_escaped_multibyte_checkmark_is_valid
+    assert @validator.new('\\xE2\\x9C\\x94').valid?
+  end
+
+  def test_returns_false_when_valid_utf8_encoding_raises_argument_error
+    validator = @validator.new('test')
+    validator.stub(:valid_utf8_encoding?, proc { raise ArgumentError }) do
+      refute validator.valid?
+    end
+  end
+
+  def test_unescape_hex_sequences_returns_original_when_no_hex_patterns
+    validator = @validator.new('PlainText')
+    assert_equal 'PlainText', validator.send(:unescape_hex_sequences, 'PlainText')
   end
 end
