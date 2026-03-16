@@ -28,7 +28,7 @@ GEM
     connection_pool (2.5.4)
     daemons (1.4.1)
     docile (1.4.1)
-    dotenv (3.1.8)
+    dotenv (3.2.0)
     drb (2.2.3)
     eventmachine (1.2.7)
     i18n (1.14.7)
