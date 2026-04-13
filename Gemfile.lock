@@ -42,7 +42,7 @@ GEM
     mina (1.2.5)
       rake
     minitest (5.26.2)
-    mocha (2.7.1)
+    mocha (3.1.0)
       ruby2_keywords (>= 0.0.5)
     ostruct (0.6.3)
     parallel (2.0.1)
