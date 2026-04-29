@@ -113,7 +113,7 @@ DEPENDENCIES
   simpleidn (~> 0.2.1)
 
 RUBY VERSION
-   ruby 3.4.8p72
+   ruby 4.0.1p0
 
 BUNDLED WITH
    2.6.9
