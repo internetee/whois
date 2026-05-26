@@ -2,6 +2,7 @@ name: Test and Coverage
 
 on:
   pull_request:
+  push:
 
 permissions:
   contents: read
@@ -22,7 +23,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-24.04]
-        ruby: ['3.4.8']
     runs-on: ${{ matrix.os }}
     env:
       PG_DATABASE: postgres
@@ -39,7 +39,7 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ matrix.ruby }}
+          ruby-version: .ruby-version
           bundler-cache: true
 
       - name: Prepare database config
