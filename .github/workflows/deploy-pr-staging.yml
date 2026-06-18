@@ -36,13 +36,26 @@ jobs:
           role-to-assume: ${{ secrets.GH_ACTIONS_DEPLOY_ROLE_ARN }} 
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: 💎 Read Ruby version from .ruby-version
+        id: ruby_version
+        run: |
+          RUBY_VERSION="$(tr -d '[:space:]' < .ruby-version)"
+          if ! echo "$RUBY_VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Invalid Ruby version in .ruby-version: '$RUBY_VERSION'" >&2
+            exit 1
+          fi
+          echo "RUBY_VERSION=$RUBY_VERSION" >> "$GITHUB_OUTPUT"
+
       - name: 🛠️ Build and Tag Docker image
         id: docker_build
+        env:
+          RUBY_VERSION: ${{ steps.ruby_version.outputs.RUBY_VERSION }}
         run: |
           TAG="pr-${{ github.event.inputs.pr_number }}"
           echo "IMAGE_TAG=$TAG" >> $GITHUB_OUTPUT
 
           docker build --no-cache --platform linux/amd64 -f Dockerfile.staging \
+            --build-arg RUBY_VERSION="$RUBY_VERSION" \
             -t ${{ env.APP_NAME }}:${TAG} .
             
       - name: 🔑 ECR Login using AWS CLI
