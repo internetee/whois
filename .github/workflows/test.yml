@@ -12,7 +12,7 @@ jobs:
   test:
     services:
       postgres:
-        image: postgres:17
+        image: postgres:18
         ports: ["5432:5432"]
         env:
           POSTGRES_PASSWORD: password
