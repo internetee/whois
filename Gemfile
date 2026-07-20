@@ -26,5 +26,5 @@ group :development, :test do
   gem 'minitest'
   gem 'mocha'
   gem 'ostruct'
-  gem 'simplecov', '0.22.0', require: false # CC last supported v0.17
+  gem 'simplecov', '1.0.2', require: false # CC last supported v0.17
 end
