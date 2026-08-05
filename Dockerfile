@@ -1,4 +1,7 @@
-FROM ruby:3.4.5-bullseye
+# Ruby version is sourced from .ruby-version via the RUBY_VERSION build arg in CI.
+# The default below is kept in sync with .ruby-version for local builds.
+ARG RUBY_VERSION=3.4.9
+FROM ruby:${RUBY_VERSION}-bookworm
 
 LABEL org.opencontainers.image.source=https://github.com/internetee/whois
 LABEL org.opencontainers.image.description="WHOIS server for .ee domains"
@@ -12,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     libsystemd-dev \
     whois \
     locales \
-    netcat \
+    netcat-openbsd \
     && echo "et_EE.UTF-8 UTF-8" > /etc/locale.gen \
     && locale-gen \
     && rm -rf /var/lib/apt/lists/* \
@@ -47,11 +50,10 @@ COPY --chown=whois:whois Gemfile Gemfile.lock ./
 
 # Install dependencies and create Gemfile.lock
 RUN gem update --system && \
-    gem install bundler && \
+    gem install bundler -v "$(grep -A1 'BUNDLED WITH' Gemfile.lock | tail -n1 | tr -d '[:space:]')" && \
     bundle config set --local specific_platform true && \
     bundle config set --local without 'development test' && \
     bundle install --jobs 20 --retry 5 && \
-    bundle lock --add-platform x86_64-linux && \
     rm -rf /usr/local/bundle/cache/*.gem && \
     find /usr/local/bundle/gems/ -name "*.c" -delete && \
     find /usr/local/bundle/gems/ -name "*.o" -delete && \
