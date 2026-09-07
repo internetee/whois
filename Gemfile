@@ -4,7 +4,7 @@ ruby '3.4.9'
 
 # core
 gem 'eventmachine', '~> 1.2.7'
-gem 'simpleidn', '~> 0.2.1' # For punycode
+gem 'simpleidn', '~> 0.3.0' # For punycode
 
 # database
 gem 'activerecord', '~> 7.2', '>= 7.2.2.2'
