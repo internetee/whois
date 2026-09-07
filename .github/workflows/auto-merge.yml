@@ -80,7 +80,7 @@ jobs:
 
       - name: Mark PR as auto-merge enabled
         if: steps.check_auto_merge.outputs.auto_merge == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
