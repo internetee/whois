@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '3.4.9'
+ruby '4.0.6'
 
 # core
 gem 'eventmachine', '~> 1.2.7'
