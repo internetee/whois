@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'date'
 require 'time'
 
 # Activation switch for the new .ee disclosure policy
@@ -34,6 +35,8 @@ module DisclosurePolicy
       value = value.strip
       raise ArgumentError unless value.match?(OFFSET_SUFFIX)
 
+      # Time.iso8601 normalizes invalid calendar dates; DateTime rejects them.
+      DateTime.iso8601(value)
       Time.iso8601(value)
     rescue ArgumentError
       raise ArgumentError,

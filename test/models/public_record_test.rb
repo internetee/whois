@@ -181,6 +181,29 @@ class PublicRecordTest < Minitest::Test
     refute_includes body, '+555.555'
   end
 
+  # Old blobs lack registrant_system_disclosed_attributes and the
+  # business-registry checker wrote 'phone' into disclosed_attributes too,
+  # so consent cannot be proven: the phone stays hidden.
+  def test_old_blob_registrant_phone_stays_hidden
+    json = org_json.merge(registrant_publishable: true,
+                          registrant_disclosed_attributes: %w[name email phone])
+    json.delete(:registrant_system_disclosed_attributes)
+    body = WhoisRecord.new(name: 'companydomain.test', json: json).unix_body
+
+    assert_includes body, "Registrant:\nname:       Mega Corp"
+    assert_includes body, "email:      owner@companydomain.test"
+    assert_includes body, "phone:      #{WEBBASED_MASK}"
+    refute_includes body, '+555.555'
+  end
+
+  def test_registrant_phone_shown_when_system_disclosed_key_present_and_empty
+    record = org_record(registrant_publishable: true,
+                        registrant_disclosed_attributes: %w[phone],
+                        registrant_system_disclosed_attributes: [])
+
+    assert_includes record.unix_body, "phone:      +555.555"
+  end
+
   def test_volunteered_contact_attributes_and_mixed_contacts
     record = org_record(
       admin_contacts: [

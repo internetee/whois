@@ -37,6 +37,13 @@ class DisclosurePolicyTest < Minitest::Test
     end
   end
 
+  def test_raises_on_impossible_calendar_date
+    with_env_variable('2027-02-30T00:00:00+02:00') do
+      error = assert_raises(ArgumentError) { DisclosurePolicy.reset! }
+      assert_includes error.message, ENV_VARIABLE
+    end
+  end
+
   def test_parses_iso8601_timestamp_with_offset
     with_env_variable('2027-01-18T00:00:00+02:00') do
       DisclosurePolicy.reset!

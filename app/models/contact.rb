@@ -2,7 +2,7 @@ class Contact
   include ActiveModel::Model
 
   attr_accessor :name, :email, :phone, :disclosed_attributes, :registrant_publishable,
-                :contact_publishable, :system_disclosed_attributes, :kind
+                :contact_publishable, :system_disclosed_attributes, :kind, :registrant
 
   def publishable?
     registrant_publishable
@@ -24,8 +24,15 @@ class Contact
   # not volunteered by the owner.
   def volunteered?(attribute)
     return false unless publishable_for_disclosure? && attribute_disclosed?(attribute)
+    return true if attribute.to_s != 'phone'
 
-    attribute.to_s != 'phone' || !(system_disclosed_attributes || []).include?('phone')
+    # Old blobs predate registrant_system_disclosed_attributes and the
+    # business-registry checker wrote 'phone' into disclosed_attributes too,
+    # so consent cannot be proven when the key is absent. Only the registrant
+    # carries the key, hence the flag.
+    return false if registrant && system_disclosed_attributes.nil?
+
+    !(system_disclosed_attributes || []).include?('phone')
   end
 
   def organization?

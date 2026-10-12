@@ -79,7 +79,8 @@ class WhoisRecord < ActiveRecord::Base
                 phone: json['phone'],
                 disclosed_attributes: json['registrant_disclosed_attributes'],
                 registrant_publishable: json['registrant_publishable'],
-                system_disclosed_attributes: json['registrant_system_disclosed_attributes'])
+                system_disclosed_attributes: json['registrant_system_disclosed_attributes'],
+                registrant: true)
   end
 
   def deserialize_contact(serialized_contact)
