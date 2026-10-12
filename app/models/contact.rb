@@ -1,7 +1,8 @@
 class Contact
   include ActiveModel::Model
 
-  attr_accessor :name, :email, :phone, :disclosed_attributes, :registrant_publishable
+  attr_accessor :name, :email, :phone, :disclosed_attributes, :registrant_publishable,
+                :contact_publishable, :system_disclosed_attributes, :kind
 
   def publishable?
     registrant_publishable
@@ -14,5 +15,26 @@ class Contact
     return unless disclosed_attributes
 
     disclosed_attributes.include?(attribute.to_s)
+  end
+
+  # New disclosure policy gate (internetee/registry#2969): an attribute is
+  # shown only when the owner explicitly marked the contact publishable AND
+  # listed the attribute as disclosed. A phone present in
+  # system_disclosed_attributes was matched against the business registry,
+  # not volunteered by the owner.
+  def volunteered?(attribute)
+    return false unless publishable_for_disclosure? && attribute_disclosed?(attribute)
+
+    attribute.to_s != 'phone' || !(system_disclosed_attributes || []).include?('phone')
+  end
+
+  def organization?
+    kind == 'org'
+  end
+
+  private
+
+  def publishable_for_disclosure?
+    registrant_publishable == true || contact_publishable == true
   end
 end
