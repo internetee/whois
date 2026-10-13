@@ -10,7 +10,7 @@ gem 'simpleidn', '~> 0.3.0' # For punycode
 gem 'activerecord', '~> 7.2', '>= 7.2.2.2'
 gem 'daemons', '~> 1.4.1'
 gem 'dotenv'
-gem 'pg', '~> 1.6.3'
+gem 'pg', '~> 1.7.0'
 
 group :development do
   gem 'rubocop'
