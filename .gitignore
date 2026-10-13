@@ -36,3 +36,6 @@ test/.DS_Store
 .claude
 
 Dockerfile.dev.v2
+.repowise/
+.playwright-cli/
+.memory-bank/

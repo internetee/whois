@@ -95,6 +95,18 @@ Start server
     sudo /etc/init.d/whois start
 
 
+Disclosure policy activation
+----------------------------
+
+The server switches to the new Domain Regulation 2027 disclosure policy for
+active domains (https://github.com/internetee/registry/issues/2969) once the
+current time reaches the moment configured via `DISCLOSURE_POLICY_ACTIVE_FROM`.
+
+    DISCLOSURE_POLICY_ACTIVE_FROM="2027-01-18T00:00:00+02:00"
+
+The value must be an ISO 8601 timestamp with an offset. Unset or blank keeps
+the legacy output. A malformed value aborts the server boot.
+
 Additional notes
 ----------------
 
