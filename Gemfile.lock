@@ -33,7 +33,7 @@ GEM
     eventmachine (1.2.7)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
-    io-console (0.8.2)
+    io-console (0.9.4)
     json (2.21.2)
     language_server-protocol (3.17.0.6)
     lint_roller (1.1.0)
@@ -53,7 +53,7 @@ GEM
     pg (1.7.0-aarch64-linux)
     pg (1.7.0-x86_64-linux)
     prism (1.9.0)
-    pry (0.16.0)
+    pry (0.16.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
       reline (>= 0.6.0)
@@ -61,7 +61,7 @@ GEM
     rainbow (3.1.1)
     rake (13.3.0)
     regexp_parser (2.12.0)
-    reline (0.6.3)
+    reline (0.7.0)
       io-console (~> 0.5)
     rubocop (1.90.0)
       json (>= 2.3)
@@ -109,7 +109,7 @@ DEPENDENCIES
   mocha
   ostruct
   pg (~> 1.7.0)
-  pry (~> 0.16.0)
+  pry (~> 0.16.1)
   rubocop
   simplecov (= 0.22.0)
   simpleidn (~> 0.3.0)
