@@ -1,3 +1,6 @@
+12.10.2026
+* New .ee disclosure policy (public level) behind DISCLOSURE_POLICY_ACTIVE_FROM activation flag https://github.com/internetee/registry/issues/2969
+
 24.10.2025
 * Fixed JSON serialization crash on invalid UTF-8 input https://github.com/internetee/whois/pull/202
 
