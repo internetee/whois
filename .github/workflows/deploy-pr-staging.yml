@@ -31,7 +31,7 @@ jobs:
           ref: refs/pull/${{ github.event.inputs.pr_number }}/merge
 
       - name: 🔑 Configure AWS Credentials (for ECR and EKS)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ secrets.GH_ACTIONS_DEPLOY_ROLE_ARN }} 
           aws-region: ${{ env.AWS_REGION }}
