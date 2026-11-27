@@ -28,6 +28,8 @@ module EventMachine
 end
 # ---------------------------------------------------
 
+require_relative '../app/models/disclosure_policy'
+
 class Minitest::Test
   def dbconfig
     return @dbconfig unless @dbconfig.nil?
